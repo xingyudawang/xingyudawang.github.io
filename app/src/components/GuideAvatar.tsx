@@ -3,17 +3,17 @@ import { media } from '../lib/media';
 import type { Lang } from '../data/caveScenes';
 
 /**
- * The site has exactly one digital-human guide.
+ * The site's single digital-human guide — the Nine-Colored Deer.
  *
- * Her portrait is not an illustration: it is cropped from the Avalokitesvara on
- * the south wall of Cave 57 — the cave nicknamed 美人窟 ("Cave of Beauties")
- * precisely for this face. One persona, one portrait, used everywhere narration
- * speaks, so there is never a second "virtual presenter" competing for attention.
+ * The portrait is cropped from the real Deer King Jātaka on the west wall of
+ * Cave 257, the same authentic scan the rest of the site is built from. One
+ * persona, one portrait, used everywhere narration speaks.
  */
 export const GUIDE = {
-  name: { zh: '妙音', en: 'Miaoyin' } as Record<string, string>,
-  role: { zh: '数字讲解人 · 敦煌', en: 'Digital guide · Dunhuang' } as Record<string, string>,
-  avatar: 'guide-avatar.webp',
+  name: { zh: '九色鹿', en: 'Nine-Colored Deer' } as Record<string, string>,
+  role: { zh: '敦煌数字讲解员', en: 'Digital guide of Dunhuang' } as Record<string, string>,
+  avatar: 'guide-deer-avatar.webp',
+  card: 'guide-deer-card.webp',
 };
 
 export const guideName = (lang: Lang) =>
@@ -21,6 +21,7 @@ export const guideName = (lang: Lang) =>
 export const guideRole = (lang: Lang) =>
   (lang === 'en' ? GUIDE.role.en : GUIDE.role.zh) as string;
 export const guideAvatar = () => media(GUIDE.avatar);
+export const guideCard = () => media(GUIDE.card);
 
 interface Props {
   lang: Lang;

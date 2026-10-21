@@ -26,7 +26,7 @@ import {
   type Spot,
 } from '../data/caveScenes';
 import { CaveEngine, type SpotProjection } from '../three/CaveEngine';
-import { GuideAvatar, GuideLine } from './GuideAvatar';
+import { GuideAvatar, guideCard, guideName, guideRole } from './GuideAvatar';
 import { useGestures } from '../lib/useGestures';
 import { narration, type NarrationState } from '../lib/narration';
 import { confirmFeedback, tapFeedback } from '../lib/haptics';
@@ -686,29 +686,43 @@ const NarrationCard: React.FC<{
           />
         </div>
 
-        <div className="flex items-start gap-3 p-3.5">
-          <div className="relative shrink-0">
-            <GuideAvatar lang={language} speaking={isSpeaking} size={52} />
-            <span className="absolute -bottom-1 -right-1 rounded-full border border-ink-800 bg-ink-700 px-1 text-[8px] text-gold-300">
-              妙音
-            </span>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0">
-                <h3 className="font-serif-sc text-[15px] leading-snug font-bold text-gold-100">
-                  {loc(spot.title, language)}
-                </h3>
-                <GuideLine lang={language} speaking={isSpeaking} />
-              </div>
-              <button
-                onClick={onClose}
-                className="-mr-1 -mt-1 shrink-0 rounded-md p-1 text-sand-400 active:bg-ink-500"
-                aria-label="关闭讲解"
-              >
-                <X className="h-4 w-4" />
-              </button>
+        {/* the digital human: the Nine-Colored Deer from Cave 257 */}
+        <div className="relative">
+          <img
+            src={guideCard()}
+            alt=""
+            className="h-24 w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-800 via-ink-800/30 to-transparent" />
+          <div className="absolute bottom-1.5 left-3 flex items-center gap-2">
+            <GuideAvatar lang={language} speaking={isSpeaking} size={34} />
+            <div className="leading-tight">
+              <div className="text-[11px] font-bold text-gold-100">{guideName(language)}</div>
+              <div className="text-[9px] text-sand-400">{guideRole(language)}</div>
             </div>
+            {isSpeaking && (
+              <span className="ml-1 flex items-end gap-0.5 pb-0.5" aria-hidden="true">
+                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '0ms' }} />
+                <span className="h-2 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '120ms' }} />
+                <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '240ms' }} />
+              </span>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="absolute right-2 top-2 rounded-md bg-ink-900/60 p-1 text-sand-300 backdrop-blur active:bg-ink-600"
+            aria-label="关闭讲解"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex items-start gap-3 p-3.5">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-serif-sc text-[15px] leading-snug font-bold text-gold-100">
+              {loc(spot.title, language)}
+            </h3>
 
             <div className="mt-2 max-h-[26vh] overflow-y-auto overscroll-contain pr-1 md:max-h-56" ref={bodyRef}>
               {chunks ? (

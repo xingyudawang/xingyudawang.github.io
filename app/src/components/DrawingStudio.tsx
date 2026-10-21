@@ -231,7 +231,7 @@ export const DrawingStudio: React.FC<{ onBack?: () => void }> = ({ onBack }) => 
     viewRef.current = { scale: 1, ox: 0, oy: 0 };
     pinchBaseRef.current = null;
     applyView();
-    tapFeedback();
+    // no haptic here: this also runs on mount / template switch, not a user tap
   }, [applyView]);
 
   // reset the view whenever a new template loads

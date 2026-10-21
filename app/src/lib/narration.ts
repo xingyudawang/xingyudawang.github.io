@@ -134,7 +134,14 @@ class NarrationManager {
     }
   }
 
-  /** Prefer neural / local / natural-sounding voices for each language. */
+  /**
+   * Pick the most natural-sounding voice available.
+   *
+   * Scoring strongly prefers the high-quality neural voices browsers expose
+   * (Microsoft's Xiaoxiao / Yunxi / Yunjian family on Edge and Windows, Google's
+   * Wavenet voices on Chrome), then any online voice, then local fallbacks —
+   * and demotes the robotic legacy engines.
+   */
   pickVoice(langPrefix: string): SpeechSynthesisVoice | undefined {
     this.loadVoices();
     const candidates = this.voices.filter((v) =>
@@ -145,13 +152,14 @@ class NarrationManager {
     const score = (v: SpeechSynthesisVoice) => {
       let s = 0;
       const n = v.name.toLowerCase();
-      if (/neural|natural|premium|enhanced/.test(n)) s += 60;
-      if (/google/.test(n)) s += 40;
-      if (/xiaoxiao|xiaoyi|yunxi|tingting|meijia|yunyang/.test(n)) s += 35;
-      if (/siri/.test(n)) s += 30;
-      if (v.localService) s += 12;
-      if (/google 普通话|google us english/.test(n)) s += 10;
-      if (/desktop|compact|espeak/.test(n)) s -= 25;
+      if (/xiaoxiao|yunxi|yunjian|xiaoyi|yunjie|yunyang|yunfeng|xiaohan|xiaomeng|xiaomo|xiaorui|xiaoshuang|xiaoxuan|xiaoyan|xiaoyou|xiaozhen|liaoning|shaanxi|shandong|tingting|huihui|kangkang/.test(n)) s += 140;
+      if (/neural|natural|premium|enhanced|wavenet|online/.test(n)) s += 110;
+      if (/google/.test(n)) s += 90;
+      if (/普通话|中文|mandarin|mainland/.test(n)) s += 45;
+      if (!v.localService) s += 55; // online voices are consistently smoother
+      if (v.localService) s += 6;
+      if (/huihui|kangkang|yaoyao/.test(n)) s -= 25; // child voices feel wrong for narration
+      if (/desktop|compact|espeak|default|synth/.test(n)) s -= 90;
       return s;
     };
 
@@ -218,8 +226,10 @@ class NarrationManager {
     utter.lang = this.lang;
     const voice = this.pickVoice(this.lang.slice(0, 2));
     if (voice) utter.voice = voice;
-    utter.rate = this.lang.startsWith('zh') ? 0.92 : 0.98;
-    utter.pitch = 1.02;
+    // natural, measured museum-guide pacing: slightly slower for Chinese,
+    // neutral pitch, no artifical exaggeration
+    utter.rate = this.lang.startsWith('zh') ? 0.9 : this.lang.startsWith('ja') ? 0.95 : 0.97;
+    utter.pitch = 1.0;
     utter.volume = 1;
 
     const chunkStartChars = this.queue
@@ -239,7 +249,13 @@ class NarrationManager {
         spokenChars: chunkStartChars + chunk.length,
       });
       this.cursor = next;
-      this.speakCurrentChunk();
+      // a short breath between sentences — back-to-back utterances sound rushed
+      const breathe = chunk.trim().endsWith('。') || chunk.trim().endsWith('.') || chunk.trim().endsWith('！') || chunk.trim().endsWith('!') || chunk.trim().endsWith('？') || chunk.trim().endsWith('?');
+      const delay = this.queue[next] ? (breathe ? 260 : 90) : 0;
+      this.pauseTimer = window.setTimeout(() => {
+        this.pauseTimer = 0;
+        if (!this.cancelled) this.speakCurrentChunk();
+      }, delay);
     };
 
     utter.onerror = (e) => {
@@ -263,6 +279,7 @@ class NarrationManager {
   }
 
   private chain: SpeechSynthesisUtterance | null = null;
+  private pauseTimer = 0;
 
   pause() {
     if (!this.supported) return;
@@ -285,6 +302,10 @@ class NarrationManager {
     this.queue = [];
     this.cursor = 0;
     this.chain = null;
+    if (this.pauseTimer) {
+      clearTimeout(this.pauseTimer);
+      this.pauseTimer = 0;
+    }
     if (this.supported) {
       try {
         window.speechSynthesis.cancel();
@@ -312,4 +333,11 @@ if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && narration.getState().status === 'speaking') narration.stop();
   });
+}
+
+// Warm the voice list as early as possible: Chrome only populates
+// speechSynthesis.getVoices() after the first call / the 'voiceschanged' event,
+// and the natural voices are the difference between a guide and a robot.
+if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
 }
