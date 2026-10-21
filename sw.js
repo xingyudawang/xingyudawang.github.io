@@ -1,7 +1,7 @@
 /* generated at build time */
-const VERSION = "v1792596491977";
+const VERSION = "v1792598273736";
 const CACHE = 'mogao-' + VERSION;
-const PRECACHE = ["/","/index.html","/media/thumb-mural-cave-320.webp","/assets/CavePanorama-oQtw3cGr.js","/assets/DeepZoomGallery-Bn7ph3pD.js","/assets/DrawingStudio-Mm0Mi28Z.js","/assets/icons-xxGrvSKJ.js","/assets/index-BhxZF8DA.js","/assets/index-CM685dqx.css","/assets/react-DFWKrInE.js","/assets/rolldown-runtime-WkwZ5CU-.js","/assets/three-BjAaiPDQ.js"];
+const PRECACHE = ["/","/index.html","/media/thumb-mural-cave-320.webp","/assets/CavePanorama-BQJA3qpb.js","/assets/DeepZoomGallery-CLUf394o.js","/assets/DrawingStudio-DZDWn-Ex.js","/assets/icons-xxGrvSKJ.js","/assets/index-CM685dqx.css","/assets/index-hb928UvD.js","/assets/react-DFWKrInE.js","/assets/rolldown-runtime-WkwZ5CU-.js","/assets/three-BjAaiPDQ.js"];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
