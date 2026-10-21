@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import {
+  BookOpen,
   Brush,
   Compass,
   Eye,
@@ -122,10 +123,11 @@ const Shell: React.FC = () => {
     { id: 'vr', label: t('navVR'), icon: <Compass className="h-5 w-5" /> },
     { id: 'zoom', label: t('navGallery'), icon: <Eye className="h-5 w-5" /> },
     { id: 'workshop', label: t('navWorkshop'), icon: <Brush className="h-5 w-5" /> },
+    { id: 'encyclopedia', label: t('navEncyclopedia'), icon: <BookOpen className="h-5 w-5" /> },
     { id: 'profile', label: t('navProfile'), icon: <Grid2x2 className="h-5 w-5" /> },
   ];
 
-  const activeTab: Tab = tab === 'encyclopedia' || tab === 'game' ? 'portal' : tab;
+  const activeTab: Tab = tab === 'game' ? 'portal' : tab;
 
   return (
     <div className={`flex h-[100svh] w-full flex-col overflow-hidden ${shellTone}`}>

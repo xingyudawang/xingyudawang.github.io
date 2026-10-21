@@ -143,7 +143,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
 
       {/* ---------------- quick actions ---------------- */}
       <section className="px-4 pt-4">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2.5">
           {[
             { id: 'workshop', label: '彩绘工坊', icon: Palette, color: 'from-cinnabar/80 to-cinnabar/30' },
             { id: 'encyclopedia', label: '敦煌百科', icon: BookOpen, color: 'from-lapis/80 to-lapis/30' },
@@ -158,12 +158,12 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
                   tapFeedback();
                   onOpenTab(a.id);
                 }}
-                className="flex flex-col items-center gap-1.5 rounded-xl border border-ink-300 bg-ink-700/80 py-3 active:scale-95"
+                className="flex flex-col items-center gap-2 rounded-xl border border-ink-300 bg-ink-700/80 py-3.5 active:scale-95"
               >
-                <span className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${a.color}`}>
-                  <Icon className="h-4 w-4 text-gold-100" />
+                <span className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${a.color}`}>
+                  <Icon className="h-6 w-6 text-gold-100" />
                 </span>
-                <span className="text-[10.5px] text-sand-200">{a.label}</span>
+                <span className="text-[11.5px] text-sand-200">{a.label}</span>
               </button>
             );
           })}
@@ -357,11 +357,11 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
       <button
         onClick={speakWelcome}
         aria-label="九色鹿 · 数字讲解员"
-        className="group fixed right-4 z-30 flex flex-col items-center"
-        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 4.6rem)' }}
+        className="group fixed right-3 z-30 flex flex-col items-center"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 5.2rem)' }}
       >
         <span
-          className={`pointer-events-none mb-1.5 max-w-[150px] rounded-xl border px-2 py-1 text-center text-[10px] leading-snug backdrop-blur-md transition-all duration-300 ${
+          className={`pointer-events-none mb-2 max-w-[170px] rounded-xl border px-2.5 py-1 text-center text-[11px] leading-snug backdrop-blur-md transition-all duration-300 ${
             introSpeaking || introPaused
               ? 'border-gold-400/50 bg-ink-900/90 text-gold-200 opacity-100'
               : 'border-gold-400/25 bg-ink-900/75 text-sand-300 opacity-0 group-active:opacity-100'
@@ -369,7 +369,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
         >
           {introSpeaking ? '九色鹿讲解中 · 点按暂停' : introPaused ? '已暂停 · 点按继续' : '九色鹿 · 带您逛敦煌'}
         </span>
-        <span className="relative block h-[72px] w-[72px]">
+        <span className="relative block h-[96px] w-[96px]">
           {introSpeaking && (
             <span className="absolute inset-0 animate-ping rounded-full border border-gold-300/50" style={{ animationDuration: '1.8s' }} />
           )}
@@ -380,7 +380,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
             className="relative h-full w-full animate-float rounded-full border-2 border-gold-400/70 object-cover shadow-[0_6px_24px_rgba(0,0,0,0.6),0_0_18px_rgba(229,184,105,0.25)] transition-transform group-active:scale-90"
             style={{ animationDuration: '5s' }}
           />
-          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-ink-800 bg-ink-700 px-1.5 py-px text-[8px] whitespace-nowrap text-gold-300">
+          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-ink-800 bg-ink-700 px-2 py-px text-[9px] whitespace-nowrap text-gold-300">
             {guideName(language)}
           </span>
         </span>
