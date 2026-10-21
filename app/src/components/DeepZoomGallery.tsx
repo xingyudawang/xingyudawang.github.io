@@ -165,8 +165,34 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
     applyTransform();
   }, [applyTransform]);
 
+  // Start the painting BIGGER than "fit": the initial view fills the stage
+  // (capped at 1.75×) so details — especially the lower registers — are
+  // immediately legible, and the viewer can pinch out to see the whole work.
+  const initialZoomDone = useRef(false);
+  const applyInitialCover = useCallback(() => {
+    if (initialZoomDone.current) return;
+    const stage = stageRef.current;
+    const el = contentRef.current;
+    if (!stage || !el) return;
+    const iw = el.offsetWidth;
+    const ih = el.offsetHeight;
+    const sw = stage.clientWidth;
+    const sh = stage.clientHeight;
+    if (!iw || !ih) return; // layout not ready yet: keep the flag armed and retry
+    initialZoomDone.current = true;
+    const cover = Math.max(sw / iw, sh / ih);
+    const next = Math.min(cover, 1.75);
+    if (next > 1.05 && next <= MAX_SCALE) {
+      transform.current.scale = next;
+      transform.current.x = 0;
+      transform.current.y = 0;
+      applyTransform();
+    }
+  }, [applyTransform]);
+
   // reset when the mural or image mode changes
   useEffect(() => {
+    initialZoomDone.current = false;
     resetView();
     setActiveHotspot(null);
     setLoaded(false);
@@ -333,6 +359,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
               alt=""
               aria-hidden="true"
               onError={(e) => (e.currentTarget.style.display = 'none')}
+              onLoad={applyInitialCover}
               draggable={false}
               className="block max-h-[calc(100svh-11rem)] max-w-[100vw] scale-105 select-none object-contain blur-md"
             />
@@ -342,6 +369,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
               onLoad={(e) => {
                 setLoaded(true);
                 e.currentTarget.style.opacity = '1';
+                applyInitialCover();
               }}
               draggable={false}
               className="absolute inset-0 block max-h-[calc(100svh-11rem)] max-w-[100vw] select-none object-contain opacity-0 transition-opacity duration-500"
