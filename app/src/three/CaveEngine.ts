@@ -201,6 +201,12 @@ export class CaveEngine {
   private build(sceneData: CaveScene) {
     const { radius, height } = sceneData.room;
     const halfH = height / 2;
+    // some murals (Northern Wei caves above all) are naturally soot-dark;
+    // a per-cave multiplier lifts them without touching the other caves
+    const boost = sceneData.brightness ?? 1;
+    const boostColor = (mat: THREE.MeshBasicMaterial) => {
+      mat.color = new THREE.Color(boost, boost, boost);
+    };
 
     // ---- Four curved painted walls -----------------------------------
     // Panel i is centred on bearing i*90°, and the camera's zero bearing looks
@@ -224,6 +230,7 @@ export class CaveEngine {
         side: THREE.BackSide,
         toneMapped: false,
       });
+      boostColor(mat);
       const fullTex = this.loadTextureInto(mat, sceneData.walls[i], thumb(sceneData.walls[i]));
 
       const mesh = new THREE.Mesh(geo, mat);
@@ -239,6 +246,7 @@ export class CaveEngine {
       side: THREE.DoubleSide,
       toneMapped: false,
     });
+    boostColor(ceilMat);
     this.loadTextureInto(ceilMat, sceneData.ceiling, thumb(sceneData.ceiling));
     const ceiling = new THREE.Mesh(ceilGeo, ceilMat);
     ceiling.rotation.x = Math.PI / 2;
@@ -252,6 +260,7 @@ export class CaveEngine {
     // shadowed sand floor instead of a flat gradient.
     const floorGeo = new THREE.CircleGeometry(radius, 72);
     const floorMat = new THREE.MeshBasicMaterial({ color: 0x33251a });
+    boostColor(floorMat);
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -halfH;
@@ -274,6 +283,7 @@ export class CaveEngine {
         color: 0x241a12,
         toneMapped: false,
       });
+      boostColor(mat);
       this.loadTextureInto(mat, p.texture, thumb(p.texture));
       const pillar = new THREE.Mesh(geo, mat);
       pillar.rotation.y = Math.PI / 4;

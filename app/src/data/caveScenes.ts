@@ -54,6 +54,8 @@ export interface CaveScene {
   startYaw: number;
   intro: Loc;
   spots: Spot[];
+  /** texture brightness multiplier (>1 brightens murals that are naturally dark) */
+  brightness?: number;
 }
 
 /* -------------------------------------------------------------------------
@@ -66,6 +68,7 @@ export interface CaveScene {
 export const CAVE_SCENES: CaveScene[] = [
   {
     caveId: 'cave-257',
+    brightness: 1.14,
     walls: [
       media('wall-cave-257-w.webp'),
       media('wall-cave-257-n.webp'),
@@ -136,6 +139,7 @@ export const CAVE_SCENES: CaveScene[] = [
 
   {
     caveId: 'cave-254',
+    brightness: 1.32,
     walls: [
       media('wall-cave-254-w.webp'),
       media('wall-cave-254-n.webp'),
@@ -551,6 +555,7 @@ export const CAVE_SCENES: CaveScene[] = [
 
   {
     caveId: 'cave-17',
+    brightness: 1.12,
     walls: [
       media('wall-cave-17-w.webp'),
       media('wall-cave-17-n.webp'),

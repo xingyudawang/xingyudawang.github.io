@@ -343,8 +343,8 @@ export const CavePanorama: React.FC<Props> = ({
         className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-700"
         style={{
           background: candle
-            ? 'radial-gradient(ellipse at 50% 46%, rgba(255,190,110,0.10) 0%, rgba(0,0,0,0) 46%), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.62) 100%)'
-            : 'radial-gradient(ellipse at 50% 40%, rgba(255,225,180,0.07) 0%, rgba(0,0,0,0) 42%), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.42) 100%)',
+            ? 'radial-gradient(ellipse at 50% 46%, rgba(255,190,110,0.12) 0%, rgba(0,0,0,0) 46%), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 46%, rgba(0,0,0,0.42) 100%)'
+            : 'radial-gradient(ellipse at 50% 40%, rgba(255,225,180,0.08) 0%, rgba(0,0,0,0) 42%), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.30) 100%)',
         }}
       />
 

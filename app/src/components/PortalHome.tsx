@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   BookOpen,
   ChevronRight,
@@ -14,8 +14,10 @@ import {
 import { CAVES, MURALS } from '../data/dunhuangData';
 import { loc, type Lang } from '../data/caveScenes';
 import { media, thumb } from '../lib/media';
+import { narration } from '../lib/narration';
 import { useApp } from '../context/AppContext';
-import { tapFeedback } from '../lib/haptics';
+import { tapFeedback, confirmFeedback } from '../lib/haptics';
+import { GuideAvatar, guideName, guideRole } from './GuideAvatar';
 
 interface Props {
   onOpenCave: (caveId: string) => void;
@@ -25,9 +27,34 @@ interface Props {
 
 const ERAS = ['全部', '北魏', '西魏', '隋代', '初唐', '盛唐', '中唐', '五代', '元代'] as const;
 
+const WELCOME: Record<string, string> = {
+  zh: '欢迎来到莫高幻境。我是九色鹿，这座数字展厅的讲解员。一千六百年前，人们把我画在莫高窟第257窟的西壁上。今天，请允许我陪您走一走这些洞窟：您可以拖动环视、双指放大细节，点一点金色的光点，听我把每幅壁画的故事讲给您。我们先从我的家——第257窟开始，好吗？',
+  en: "Welcome to the Mogao Mirage. I am the Nine-Colored Deer, the guide of this digital gallery. Sixteen hundred years ago, people painted me on the west wall of Cave 257. Today, let me walk with you through these caves: drag to look around, pinch to zoom into details, and tap the golden markers — I will tell you the story of each painting. Shall we begin at my home, Cave 257?",
+};
+
 export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab }) => {
   const { language, t, user } = useApp();
   const [era, setEra] = useState<(typeof ERAS)[number]>('全部');
+  const [narrationState, setNarrationState] = useState(() => narration.getState());
+
+  useEffect(() => narration.subscribe(setNarrationState), []);
+
+  const introSpeaking =
+    narrationState.sourceId === 'portal-intro' && narrationState.status === 'speaking';
+  const introPaused = narrationState.sourceId === 'portal-intro' && narrationState.status === 'paused';
+
+  const speakWelcome = () => {
+    if (introSpeaking) {
+      narration.pause();
+      return;
+    }
+    if (introPaused) {
+      narration.resume();
+      return;
+    }
+    narration.speak('portal-intro', guideName(language), WELCOME[language] ?? WELCOME.zh, language);
+    confirmFeedback();
+  };
 
   const caves = useMemo(
     () =>
@@ -111,6 +138,40 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
               <Grid2x2 className="h-3 w-3 text-gold-300" /> {CAVES.length} 座洞窟
             </span>
           </div>
+
+          {/* the digital human: Nine-Colored Deer */}
+          <button
+            onClick={speakWelcome}
+            className={`mt-4 flex w-full max-w-sm items-center gap-3 rounded-2xl border p-2.5 text-left backdrop-blur transition-colors active:scale-[0.99] ${
+              introSpeaking
+                ? 'border-gold-300 bg-ink-900/70 shadow-[0_0_22px_rgba(229,184,105,0.25)]'
+                : 'border-gold-400/40 bg-ink-900/55'
+            }`}
+          >
+            <GuideAvatar lang={language} speaking={introSpeaking} size={46} />
+            <span className="min-w-0 flex-1">
+              <span className="block text-[12.5px] font-bold text-gold-100">
+                {guideName(language)}
+                <span className="ml-1.5 text-[9.5px] font-normal text-sand-400">{guideRole(language)}</span>
+              </span>
+              <span className="block truncate text-[10.5px] text-sand-300">
+                {introSpeaking
+                  ? '◉ 正在讲解 · 点按可暂停'
+                  : introPaused
+                    ? '▷ 已暂停 · 点按继续'
+                    : '点我，让九色鹿带您开启敦煌之旅'}
+              </span>
+            </span>
+            {introSpeaking ? (
+              <span className="flex items-end gap-0.5 pr-1" aria-hidden="true">
+                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '0ms' }} />
+                <span className="h-2 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '120ms' }} />
+                <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '240ms' }} />
+              </span>
+            ) : (
+              <Volume2 className={`h-4 w-4 shrink-0 ${introPaused ? 'text-sand-400' : 'text-gold-300'}`} />
+            )}
+          </button>
         </div>
       </section>
 
