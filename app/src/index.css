@@ -1,0 +1,396 @@
+@import "tailwindcss";
+
+/* ============================================================
+   莫高幻境 · Design tokens
+   ============================================================ */
+@theme {
+  --color-ink-900: #0c0907;
+  --color-ink-800: #120e0b;
+  --color-ink-700: #17110d;
+  --color-ink-600: #1e1610;
+  --color-ink-500: #241a13;
+  --color-ink-400: #2e2118;
+  --color-ink-300: #3d2c1e;
+  --color-ink-200: #55402e;
+
+  --color-gold-100: #f8ecd4;
+  --color-gold-200: #f5d697;
+  --color-gold-300: #e5b869;
+  --color-gold-400: #d4a359;
+  --color-gold-500: #b8803c;
+  --color-gold-600: #8c5820;
+
+  --color-cinnabar: #c1382b;
+  --color-lapis: #244b7a;
+  --color-malachite: #2e6355;
+  --color-ochre: #a44322;
+
+  --color-sand-100: #efe3ce;
+  --color-sand-200: #e2d2b6;
+  --color-sand-300: #c9b7a1;
+  --color-sand-400: #a89582;
+  --color-sand-500: #8c7866;
+
+  --font-serif-sc: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+  --font-calligraphy: 'Ma Shan Zheng', cursive, serif;
+  --font-cinzel: 'Cinzel', serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   Base / mobile-first resets
+   ============================================================ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    /* Kill the 300ms grey flash on every tap — biggest perceived-jank win on mobile */
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+    /* Stop iOS rubber-banding from fighting full-screen 3D / canvas stages */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100%;
+    font-family: var(--font-serif-sc);
+    color: var(--color-sand-100);
+    background-color: var(--color-ink-800);
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(212, 163, 89, 0.08) 0%, transparent 60%),
+      radial-gradient(circle at 100% 100%, rgba(193, 56, 43, 0.05) 0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+    overflow-x: hidden;
+  }
+
+  /* Interactive chrome should never select text on drag */
+  button,
+  [role='tab'],
+  [role='button'] {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  input,
+  textarea {
+    font-family: inherit;
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-300);
+    outline-offset: 2px;
+  }
+
+  img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+/* ============================================================
+   Layout helpers
+   ============================================================ */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Horizontal chip/tab rails: momentum scroll + snap, no scrollbar */
+@utility rail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > * {
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+  }
+}
+
+/* Full-bleed stage that fills the real viewport (dvh handles mobile URL bars) */
+@utility stage-full {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 420px;
+}
+
+@utility min-h-screen-dvh {
+  min-height: 100svh;
+}
+
+/* ============================================================
+   Dunhuang material language
+   ============================================================ */
+.dunhuang-gold-gradient {
+  background: linear-gradient(135deg, #f5d697 0%, #d4a359 50%, #9c6c2e 100%);
+}
+
+.dunhuang-texture-sandstone {
+  background-color: #120e0b;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(212, 163, 89, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(193, 56, 43, 0.04) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+.dunhuang-panel {
+  background: linear-gradient(168deg, rgba(28, 20, 14, 0.92) 0%, rgba(17, 12, 9, 0.97) 100%);
+  border: 1px solid rgba(212, 163, 89, 0.22);
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.8),
+    0 0 20px -3px rgba(212, 163, 89, 0.1),
+    inset 0 1px 0 rgba(245, 214, 151, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  transition: all 0.35s var(--ease-out-expo);
+}
+
+.dunhuang-card {
+  background: linear-gradient(165deg, rgba(32, 23, 17, 0.9) 0%, rgba(18, 13, 9, 0.96) 100%);
+  border: 1px solid rgba(212, 163, 89, 0.2);
+  box-shadow:
+    0 8px 25px -6px rgba(0, 0, 0, 0.75),
+    0 0 16px -2px rgba(212, 163, 89, 0.08),
+    inset 0 1px 0 rgba(245, 214, 151, 0.1);
+  transition:
+    transform 0.3s var(--ease-out-expo),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Hover effects only where a real pointer exists */
+@media (hover: hover) {
+  .dunhuang-panel-hover:hover {
+    border-color: rgba(212, 163, 89, 0.48);
+    box-shadow:
+      0 14px 42px -8px rgba(0, 0, 0, 0.85),
+      0 0 26px -2px rgba(212, 163, 89, 0.2),
+      inset 0 1px 0 rgba(245, 214, 151, 0.24);
+    transform: translateY(-2px);
+  }
+
+  .dunhuang-card:hover {
+    border-color: rgba(212, 163, 89, 0.45);
+    box-shadow:
+      0 12px 36px -6px rgba(0, 0, 0, 0.85),
+      0 0 24px -1px rgba(212, 163, 89, 0.18),
+      inset 0 1px 0 rgba(245, 214, 151, 0.22);
+  }
+}
+
+/* Touch devices get a pressed state instead of hover */
+.dunhuang-card:active {
+  transform: scale(0.985);
+  border-color: rgba(212, 163, 89, 0.4);
+}
+
+.dunhuang-glow-border {
+  border: 1px solid rgba(212, 163, 89, 0.3);
+  box-shadow: 0 0 18px -2px rgba(212, 163, 89, 0.14);
+}
+
+.dunhuang-corner-accents::before,
+.dunhuang-corner-accents::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 10;
+}
+.dunhuang-corner-accents::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid rgba(212, 163, 89, 0.7);
+  border-left: 2px solid rgba(212, 163, 89, 0.7);
+}
+.dunhuang-corner-accents::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid rgba(212, 163, 89, 0.7);
+  border-right: 2px solid rgba(212, 163, 89, 0.7);
+}
+
+.seal-stamp {
+  border: 2px solid #b83b2a;
+  color: #b83b2a;
+  box-shadow:
+    inset 0 0 4px rgba(184, 59, 42, 0.3),
+    0 0 6px rgba(184, 59, 42, 0.2);
+}
+
+/* Vertical Chinese text for museum labels */
+@utility text-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.25em;
+}
+
+/* Multi-line clamp without a plugin */
+@utility clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@utility clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Motion
+   ============================================================ */
+@keyframes floatGentle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+.animate-float {
+  animation: floatGentle 6s ease-in-out infinite;
+}
+
+@keyframes candleFlicker {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 15px rgba(245, 170, 66, 0.4));
+  }
+  25% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 25px rgba(245, 170, 66, 0.6));
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 12px rgba(245, 170, 66, 0.35));
+  }
+  75% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 22px rgba(245, 170, 66, 0.55));
+  }
+}
+.animate-candle {
+  animation: candleFlicker 3.5s infinite;
+}
+
+@keyframes sandShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(212, 163, 89, 0) 0%,
+    rgba(212, 163, 89, 0.3) 50%,
+    rgba(212, 163, 89, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: sandShimmer 3s infinite;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.4s var(--ease-out-expo) both;
+}
+
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-up {
+  animation: sheetUp 0.32s var(--ease-out-expo);
+}
+
+@keyframes hotspotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 184, 105, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(229, 184, 105, 0);
+  }
+}
+.animate-hotspot {
+  animation: hotspotPulse 2.2s ease-out infinite;
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Custom scrollbars (desktop only)
+   ============================================================ */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #181310;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #63432d;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b57a44;
+  }
+}
