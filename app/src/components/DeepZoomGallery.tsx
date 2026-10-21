@@ -3,8 +3,10 @@ import {
   ArrowLeft,
   Bookmark,
   BookmarkCheck,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Headphones,
   Layers,
   Maximize2,
@@ -45,6 +47,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
   const [loaded, setLoaded] = useState(false);
   // user-corrected hotspot positions (persisted per mural)
   const [editMode, setEditMode] = useState(false);
+  const [panelCollapsed, setPanelCollapsed] = useState(false);
   const [overrides, setOverrides] = useState<Record<string, Record<string, { x: number; y: number }>>>(() => {
     try {
       return JSON.parse(localStorage.getItem('dh_hotspot_overrides') ?? '{}');
@@ -171,6 +174,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
 
   useEffect(() => {
     narration.stop();
+    setPanelCollapsed(false);
   }, [initialMuralId]);
 
   const gestures = useGestures<HTMLDivElement>({
@@ -465,10 +469,27 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
       </div>
 
       {/* ---------------- bottom panel ---------------- */}
+      {!panelCollapsed ? (
       <div
         className="shrink-0 border-t border-ink-400/70 bg-ink-800/95 backdrop-blur-md"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
+        {/* collapse bar */}
+        <div className="flex items-center justify-center">
+          <button
+            onClick={() => {
+              setPanelCollapsed(true);
+              tapFeedback();
+            }}
+            className="flex items-center gap-1 rounded-b-lg border border-t-0 border-ink-400/60 bg-ink-700 px-3 py-0.5 text-[10px] text-sand-400 active:bg-ink-600"
+            aria-label="收起信息栏，查看完整画面"
+            title="收起信息栏"
+          >
+            收起信息栏 看全图
+            <ChevronDown className="h-3 w-3" />
+          </button>
+        </div>
+
         {/* view mode rail */}
         <div className="rail px-3 pt-2.5 pb-1">
           {modes.map((m) => (
@@ -592,6 +613,21 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
           )}
         </div>
       </div>
+      ) : (
+        /* collapsed: the whole screen belongs to the painting */
+        <button
+          onClick={() => {
+            setPanelCollapsed(false);
+            tapFeedback();
+          }}
+          className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-gold-400/40 bg-ink-800/90 px-4 py-2 text-[11px] text-gold-200 shadow-lg backdrop-blur-md active:scale-95"
+          style={{ bottom: 'calc(env(safe-area-inset-bottom) + 1rem)' }}
+          aria-label="展开信息栏"
+        >
+          <ChevronUp className="h-3.5 w-3.5" />
+          展开信息栏 · 听讲解
+        </button>
+      )}
 
       {/* ---------------- hotspot sheet ---------------- */}
       {activeHotspot && (
