@@ -1,6 +1,6 @@
 import { getStroke } from 'perfect-freehand';
 
-export type PaintTool = 'brush' | 'eraser' | 'fill' | 'seal';
+export type PaintTool = 'brush' | 'eraser' | 'fill' | 'seal' | 'pan';
 
 export type PaintPoint = [number, number, number]; // x, y, pressure
 
