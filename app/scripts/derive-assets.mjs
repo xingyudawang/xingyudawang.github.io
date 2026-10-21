@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const PUB = path.join('public', 'media');
+const PUB = path.join('..', 'media'); // the repo's single media/ folder
 const SRC = (f) => path.join(PUB, f);
 
 async function save(buf, dest, width, quality = 82) {

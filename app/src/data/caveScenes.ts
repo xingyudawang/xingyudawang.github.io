@@ -603,6 +603,362 @@ export const CAVE_SCENES: CaveScene[] = [
         }
       }
     ]
+  },
+  {
+    caveId: 'cave-220',
+    walls: [
+      media('wall-cave-220-w.webp'),
+      media('wall-cave-220-n.webp'),
+      media('wall-cave-220-e.webp'),
+      media('wall-cave-220-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-220.webp'),
+    room: { radius: 5.2, height: 4.8 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第220窟，开凿于贞观十六年——公元642年。这是敦煌翟氏家族的"家窟"，四壁全是初唐画坛第一流的手笔。转过身去，东壁的《维摩诘经变》里有著名的帝王问疾图；右手边北壁是药师七佛与乐舞；左手边南壁，是莫高窟最早、场面最大的净土变。请点亮光点。',
+      en: 'Welcome to Cave 220, cut in 642 CE, the family cave of Dunhuang\'s Zhai clan, every wall the work of the finest early Tang hands. Turn around: the Vimalakīrti illustration on the east wall holds the famous emperor procession; on the north wall to your right are the seven Medicine Buddhas with their dancers; on the south wall to your left is the earliest and largest Pure Land tableau at Mogao. Light up the markers.'
+    },
+    spots: [
+      {
+        id: 'c220-vk',
+        yaw: 180,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '东壁 · 帝王问疾图', en: 'East Wall: The Emperor\'s Visit' },
+        facts: [
+          { zh: '帝王冕旒大裘，各国王子相随', en: 'The emperor in regalia with foreign princes in train' },
+          { zh: '1943年剥出，初唐原作重见天日', en: 'Revealed in 1943 from beneath a later layer' }
+        ],
+        muralId: 'mural-vimalakirti',
+        thumb: media('detail-cave-220.webp')
+      },
+      {
+        id: 'c220-yakshi',
+        yaw: 90,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '北壁 · 药师七佛与乐舞', en: 'North Wall: The Medicine Buddhas' },
+        narration: {
+          zh: '请转向右手边北壁。这是根据《药师如来本愿经》绘制的巨型壁画，主题是七身药师佛，身边有日光、月光菩萨。请把视线放到画面下部：舞伎在莲花座上起舞，两侧乐队伴奏——这是研究唐代乐舞最珍贵的图像之一。当年剥开表层壁画时，人们第一次看到了贞观年间长安城里的流行舞姿与乐器。您可以把这面墙当成一座唐代的音乐厅：画上的每件乐器、每个舞姿，都是实物与文献之外唯一的现场。',
+          en: 'Turn to the north wall on your right. This is the great illustration of the Medicine Buddha Sutra, built around seven Bhaisajyaguru Buddhas with the Sunlight and Moonlight bodhisattvas. Now look to the lower register: a dancer moves on a lotus pedestal while the orchestra plays on either side — one of the most precious images for the study of Tang music and dance. When the overlying layer was removed, people saw for the first time the fashionable dances and instruments of Chang\'an in the Zhenguan era. Read this wall as a Tang concert hall: every instrument and every pose is a live performance no text or surviving object can replace.'
+        },
+        thumb: media('wall-cave-220-n.webp')
+      },
+      {
+        id: 'c220-sukhavati',
+        yaw: -90,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '南壁 · 最早的净土变', en: 'South Wall: The Earliest Pure Land' },
+        narration: {
+          zh: '左手边南壁，是根据《佛说阿弥陀经》绘成的西方极乐世界图——莫高窟最早、场面最大的净土变。整铺画面分三段：中央是阿弥陀佛说法，楼阁亭台浮于七宝池上；两侧是听法的众生与化生童子。请注意画师对"水"的处理：池水用一道道细线画出波纹，楼阁的倒影倒映其中。盛唐以后无数的净土变，都是从这里出发的。',
+          en: 'On the south wall to your left is the Western Paradise according to the Amitābha Sutra — the earliest and largest Pure Land tableau at Mogao. It builds in three registers: the Buddha preaching at the centre with pavilions rising from seven-jewel pools, and hosts of listeners and lotus-born children on either side. Watch how the painter treats water: the pools ripple with fine parallel lines, and the pavilions cast their reflections into them. Every later Pure Land illustration sets out from this wall.'
+        },
+        thumb: media('wall-cave-220-s.webp')
+      },
+      {
+        id: 'c220-ceiling',
+        yaw: 0,
+        pitch: 56,
+        kind: 'ceiling',
+        title: { zh: '藻井 · 莲花团龙之下', en: 'The Caisson' },
+        narration: {
+          zh: '抬头看窟顶。这口藻井是宋代重绘的卷瓣莲花团龙井心，而底层的初唐藻井与千佛至今仍在——剥落处隐隐露出初唐的莲花与团花纹样。一层画盖着另一层，第220窟本身就像一本地层书：最深处是贞观十六年的初唐，其上依次是五代、宋代的补绘。您抬头看到的，是一千三百年层层叠起来的时间。',
+          en: 'Look up. This caisson was repainted in the Song dynasty with a lotus-and-dragon medallion, yet beneath it the early Tang caisson and its thousand Buddhas still survive — where the upper layer flakes, early Tang lotuses and rosettes show through. One painting lying over another, Cave 220 is a book of strata: at the bottom the Zhenguan-era first layer, above it the repairs of the Five Dynasties and Song. What you see when you look up is thirteen hundred years stacked in layers.'
+        }
+      }
+    ]
+  },
+
+  {
+    caveId: 'cave-61',
+    walls: [
+      media('wall-cave-61-w.webp'),
+      media('wall-cave-61-n.webp'),
+      media('wall-cave-61-e.webp'),
+      media('wall-cave-61-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-61.webp'),
+    room: { radius: 5.6, height: 5.2 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第61窟，五代，曹氏归义军时期开凿的"文殊堂"。请先不要转身，正前方西壁上，是一张十三米长、三米六高的《五台山图》——现存最宏大的地图式山水画。五代时敦煌与中原道路阻隔，信徒无法亲赴五台山，于是曹氏家族把整座山画在了墙上。点亮光点，我带您在这张地图里走一走。',
+      en: 'Welcome to Cave 61, the "Hall of Mañjuśrī" cut under the Cao family government of the Five Dynasties. Do not turn yet: straight ahead, the west wall carries a Map of Mount Wutai thirteen metres long and 3.6 high — the grandest map-like landscape in existence. With the roads to the Central Plains cut, pilgrims from Dunhuang could not reach the mountain, so the Cao family painted the whole of it onto this wall. Light up the markers and I will walk you through the map.'
+    },
+    spots: [
+      {
+        id: 'c61-wutai',
+        yaw: 0,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '西壁 · 五台山图', en: 'West Wall: The Map of Mount Wutai' },
+        facts: [
+          { zh: '长13米 高3.6米，地图式山水', en: '13 m × 3.6 m of map-like landscape' },
+          { zh: '五百里山川、寺院、道路尽收画中', en: 'Five hundred li of mountains, monasteries and roads' }
+        ],
+        muralId: 'mural-wutai',
+        thumb: media('detail-cave-61.webp')
+      },
+      {
+        id: 'c61-sutras',
+        yaw: 90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '北壁 · 五铺大型经变', en: 'North Wall: Five Great Sutra Illustrations' },
+        narration: {
+          zh: '请转向右手边北壁。上部并排五铺大型经变，自西向东依次是：密严经变、天请问经变、药师经变、华严经变、思益经变。一壁五铺，这是敦煌经变画"饱和"到极限的样子。每一铺都有独立的构图与主尊，但它们共用同一套配色与山水语言，远看是五扇连续的屏风，近看是五部不同的经。请慢慢横移视线，感受五代画师如何在一面墙上安排五部经典。',
+          en: 'Turn to the north wall on your right. Five great sutra illustrations stand side by side along its upper half — from west to east the Ghanavyūha, the Questions of a Deva, the Medicine Buddha, the Avatamsaka and the Viśesacinti. Five sutras to one wall: sutra illustration at maximum saturation. Each panel has its own composition and central deity, yet all five share one palette and one landscape language — at a distance five consecutive screens, up close five different scriptures. Move your gaze slowly across and watch how a tenth-century painter staged five classics on a single wall.'
+        },
+        thumb: media('wall-cave-61-n.webp')
+      },
+      {
+        id: 'c61-ceiling',
+        yaw: 0,
+        pitch: 58,
+        kind: 'ceiling',
+        title: { zh: '华盖式藻井 · 五莲团龙鹦鹉', en: 'The Canopy Caisson' },
+        narration: {
+          zh: '抬头看窟顶。这是敦煌最大的华盖式藻井之一：中心井心画五莲团龙鹦鹉，四周依次铺开联珠纹、回纹、团花、双凤双麒麟纹饰，最外圈是层层垂幔——整个窟顶被画成一顶张开的华盖，仿佛文殊说法时头顶的宝盖。注意它的尺度感：正因为洞窟如此之大，这口藻井的每一圈纹饰都被放大到可以被"仰望"的尺寸。',
+          en: 'Look up at the ceiling. This is among the largest canopy caissons at Dunhuang: five lotuses, dragons and parrots at the centre, then rings of beaded string, fret, rosettes and paired phoenixes and qilin, and outermost tier upon tier of hanging valance — the whole vault painted as a single open canopy, the jewelled parasol above the teaching Mañjuśrī. Note the sense of scale: precisely because the cave is so vast, every ring of ornament is enlarged to a size meant to be looked up at.'
+        },
+        thumb: media('ceiling-cave-61.webp')
+      },
+      {
+        id: 'c61-vimala',
+        yaw: 180,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '东壁 · 维摩诘经变', en: 'East Wall: Vimalakīrti' },
+        narration: {
+          zh: '转过身看东壁。上段是一铺大型《维摩诘经变》，以"品"字形排列：门上方是佛国品，维摩诘与文殊分列两侧。它正对着西壁的五台山图——文殊的道场在身后，文殊的化身在面前。第61窟的一切，都是围绕这位骑狮子的菩萨安排的。',
+          en: 'Turn around to the east wall. Its upper half is a great Vimalakīrti illustration arranged like a pyramid: the Buddha field above the door, Vimalakīrti and Mañjuśrī to either side. It faces the Map of Mount Wutai across the room — the bodhisattva\'s seat behind you, his manifestation before you. Everything in Cave 61 is arranged around this lion-riding bodhisattva.'
+        },
+        thumb: media('wall-cave-61-e.webp')
+      }
+    ]
+  },
+
+  {
+    caveId: 'cave-217',
+    walls: [
+      media('wall-cave-217-w.webp'),
+      media('wall-cave-217-n.webp'),
+      media('wall-cave-217-e.webp'),
+      media('wall-cave-217-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-217.webp'),
+    room: { radius: 4.8, height: 4.6 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第217窟，盛唐。这座洞窟藏着唐代青绿山水在洞窟里的巅峰。请转向右手边北壁——那铺《观无量寿经变》用石青石绿把山峦、流水、楼阁画成一体；再转身看东壁，那里是《法华经·观音普门品》的诸难救济。点亮光点。',
+      en: 'Welcome to Cave 217, High Tang. This cave holds the peak of Tang blue-green landscape inside a cave. Turn to the north wall on your right: the Contemplation Sutra illustration builds mountains, water and pavilions into one continuous blue-green world. Then turn to the east wall for the Guanyin chapter of the Lotus Sutra and its rescues from every peril. Light up the markers.'
+    },
+    spots: [
+      {
+        id: 'c217-amitayus',
+        yaw: 90,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '北壁 · 观无量寿经变', en: 'North Wall: Contemplation Sutra' },
+        facts: [
+          { zh: '青绿重彩：唐代山水在洞窟里的巅峰', en: 'The peak of Tang blue-green landscape in a cave' },
+          { zh: '净土楼阁与真实山峦共用一条地平线', en: 'Paradise pavilions share a horizon with real hills' }
+        ],
+        muralId: 'mural-amitayus',
+        thumb: media('detail-cave-217.webp')
+      },
+      {
+        id: 'c217-pumen',
+        yaw: 180,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '东壁 · 观音普门品', en: 'East Wall: The Guanyin Chapter' },
+        narration: {
+          zh: '转过身看东壁。通壁绘《法华经·观音普门品》：火难、水难、罗刹难、刀杖难……每一种灾难都是一个独立的山水小景，观世音在每一景中现身相救。整面墙就像一本图绘的"应急手册"——念诵名号，就能找到对应的那一格。请留意画师如何在整壁的大构图中给每一"难"留出独立的空间：山与山之间，就是故事与故事之间的呼吸。',
+          en: 'Turn to the east wall. The entire surface illustrates the Guanyin chapter of the Lotus Sutra: fire, flood, demons, blades — each peril a self-contained little landscape, Avalokitesvara appearing in each to rescue. The whole wall reads as an illustrated emergency manual: recite the name and find your own panel. Notice how the painter gives every peril its own space inside one continuous composition: between the hills, the story breathes.'
+        },
+        thumb: media('wall-cave-217-e.webp')
+      },
+      {
+        id: 'c217-ceiling',
+        yaw: 0,
+        pitch: 56,
+        kind: 'ceiling',
+        title: { zh: '团花藻井', en: 'The Rosette Caisson' },
+        narration: {
+          zh: '抬头看窟顶。覆斗顶的井心是一朵团花，卷草与垂幔铺向四披。它比四壁的经变简单得多——但正是这种克制，让眼睛在看完满壁青绿之后，有一处可以休息的地方。窟顶的留白，是盛唐设计里最安静的一笔。',
+          en: 'Look up. At the centre of the inverted-funnel vault a single rosette sits, with scrolling vine and valance spreading down the four slopes. It is far simpler than the sutra illustrations below — and that restraint is deliberate: after a wall full of blue-green, the eye needs somewhere to rest. The quiet of the ceiling is the calmest stroke in High Tang design.'
+        }
+      }
+    ]
+  },
+
+  {
+    caveId: 'cave-323',
+    walls: [
+      media('wall-cave-323-w.webp'),
+      media('wall-cave-323-n.webp'),
+      media('wall-cave-323-e.webp'),
+      media('wall-cave-323-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-323.webp'),
+    room: { radius: 4.6, height: 4.4 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第323窟，初唐。这座洞窟最有名的是"佛教史迹画"——敦煌独有的题材。请转向右手边北壁：第一景是汉武帝礼拜金人，第二景是张骞出使西域。史实上这两件事相隔两百年，但初唐画师把它们画成了同一条因果链。点亮光点。',
+      en: 'Welcome to Cave 323, Early Tang. What makes this cave famous is its Buddhist history painting — a genre unique to Dunhuang. Turn to the north wall on your right: the first episode shows Emperor Wu of Han worshipping a golden statue, the second Zhang Qian setting out for the Western Regions. The two events are two hundred years apart in fact, but the early Tang painters drew them as one chain of cause and effect. Light up the markers.'
+    },
+    spots: [
+      {
+        id: 'c323-zhangqian',
+        yaw: 90,
+        pitch: -2,
+        kind: 'mural',
+        title: { zh: '北壁 · 张骞出使西域', en: 'North Wall: Zhang Qian' },
+        facts: [
+          { zh: '史实与传说的合流：为信仰重写历史', en: 'History rewritten so faith could have a route' },
+          { zh: '敦煌壁画里最早的历史叙事', en: 'The earliest historical narrative at Dunhuang' }
+        ],
+        muralId: 'mural-zhangqian',
+        thumb: media('detail-cave-323.webp')
+      },
+      {
+        id: 'c323-south',
+        yaw: -90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '南壁 · 石佛浮江', en: 'South Wall: The Floating Buddha' },
+        narration: {
+          zh: '请转向左手边南壁。这里画的是江南的感应故事：西晋吴淞江石佛浮江、东晋扬都出金像。传说中，佛像不从西域来，而是从江水里"浮"出来——佛教进入江南，就这样被画成了一次次水上的奇迹。请注意山水在其中的作用：江水把情节一格格隔开，人物乘船、岸上礼拜，山与水共同完成了叙事。',
+          en: 'Turn to the south wall on your left. Here are the miracle tales of the south: the stone Buddha floating up the Wusong River in the Western Jin, and the golden image emerging at Yangdu in the Eastern Jin. In these stories the Buddha\'s image does not arrive from the west but rises out of the water — Buddhism entering the south painted as a series of river miracles. Watch the role of landscape: the river divides the episodes into cells, people travel by boat and worship from the banks, and mountain with water together carry the narrative.'
+        },
+        thumb: media('wall-cave-323-s.webp')
+      },
+      {
+        id: 'c323-ceiling',
+        yaw: 0,
+        pitch: 56,
+        kind: 'ceiling',
+        title: { zh: '团花藻井与千佛四披', en: 'The Caisson and Thousand Buddhas' },
+        narration: {
+          zh: '抬头看窟顶。井心是一朵团花，四披垂幔之下铺满千佛。注意上下的对比：四壁讲历史与传说，窟顶只讲秩序。千佛一行行排列，像织物的经纬，把一切故事都收拢在一个安静的网格之下。',
+          en: 'Look up. A rosette sits at the centre of the vault, and beneath the valance the four slopes are packed with thousand Buddhas. Note the contrast between above and below: the walls tell history and legend, the ceiling tells only order. The Buddhas file row on row like warp and weft, folding every story into a quiet grid.'
+        }
+      }
+    ]
+  },
+
+  {
+    caveId: 'cave-3',
+    walls: [
+      media('wall-cave-3-w.webp'),
+      media('wall-cave-3-n.webp'),
+      media('wall-cave-3-e.webp'),
+      media('wall-cave-3-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-3.webp'),
+    room: { radius: 3.0, height: 3.4 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第3窟——莫高窟保存最完好的元代洞窟，也是最小的一批洞窟之一。请转向左手边南壁：一铺十一面千手千眼观音立像。这座洞窟的全部力量来自一种几乎失传的本事：白描。没有大块浓彩，千手千眼全靠一根根细线画出。',
+      en: 'Welcome to Cave 3 — the best-preserved Yuan-dynasty cave at Mogao, and one of the smallest. Turn to the south wall on your left: a standing eleven-faced, thousand-armed Avalokiteśvara. The entire power of this cave comes from a nearly lost skill: outline drawing. No heavy colour — a thousand arms and eyes put down in fine lines.'
+    },
+    spots: [
+      {
+        id: 'c3-sahasra',
+        yaw: -90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '南壁 · 千手千眼观音', en: 'South Wall: Thousand-Armed Guanyin' },
+        facts: [
+          { zh: '十一面作 3·7·1 排列', en: 'Eleven faces in rows of 3-7-1' },
+          { zh: '元代白描艺术的最高成就', en: 'The summit of Yuan outline drawing' }
+        ],
+        muralId: 'mural-sahasrabhuja',
+        thumb: media('detail-cave-3.webp')
+      },
+      {
+        id: 'c3-north',
+        yaw: 90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '北壁 · 另一铺千手观音', en: 'North Wall: A Second Guanyin' },
+        narration: {
+          zh: '转过身看北壁。这里还有一铺十一面千手千眼观音，十一面作5、5、1排列，与南壁的3、7、1正好不同。两铺观音相对而立，把整座洞窟变成了一条被千手环抱的甬道。请在两面之间慢慢移动视线——画师的线描功力，就在这两套"一千只手"的细微差别里。',
+          en: 'Turn to the north wall. Here stands a second eleven-faced, thousand-armed Guanyin, her faces stacked in rows of five, five and one — deliberately different from the 3-7-1 of the south wall. The two Guanyins face each other, turning the little cave into a corridor embraced by a thousand arms. Move your gaze slowly between the two walls: the painter\'s mastery lives in the subtle differences between two sets of a thousand hands.'
+        },
+        thumb: media('wall-cave-3-n.webp')
+      },
+      {
+        id: 'c3-almsgiving',
+        yaw: 180,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '东壁 · 散财观音', en: 'East Wall: The Treasure-Scattering Guanyin' },
+        narration: {
+          zh: '转身看东壁。门上画五身趺坐佛，门北绘散财观音——象牙、金钱、宝珠从观音手中流泻而下，下方一贫儿捧盘承接，这叫"七宝施贫"。元代画师在这里画出了整座洞窟最温柔的瞬间：千手千眼不是为了威严，而是为了能同时接住每一个需要帮助的人。',
+          en: 'Turn to the east wall. Five seated Buddhas above the door, and to its north the treasure-scattering Guanyin — ivory, coins and jewels pouring from her hands while a poor child below holds out a dish to catch them: the offering of the seven treasures. Here the Yuan painter drew the gentlest moment in the cave: a thousand arms and eyes exist not for majesty, but so that every person in need can be caught at once.'
+        },
+        thumb: media('wall-cave-3-e.webp')
+      }
+    ]
+  },
+
+  {
+    caveId: 'cave-329',
+    walls: [
+      media('wall-cave-329-w.webp'),
+      media('wall-cave-329-n.webp'),
+      media('wall-cave-329-e.webp'),
+      media('wall-cave-329-s.webp'),
+    ],
+    ceiling: media('ceiling-cave-329.webp'),
+    room: { radius: 4.6, height: 4.4 },
+    startYaw: 0,
+    intro: {
+      zh: '欢迎来到第329窟，初唐。这座洞窟最珍贵的东西在您的头顶——请先环视四壁，再慢慢地、用力地抬头。窟顶的莲花飞天藻井，四身持花飞天在湛蓝的天空中同向飞行，是初唐藻井里的名作。',
+      en: 'Welcome to Cave 329, Early Tang. The treasure of this cave is above you — first look around the walls, then raise your head slowly. The lotus-and-apsara caisson above, with four flower-bearing apsaras flying through a deep blue sky, is a masterpiece among early Tang caissons.'
+    },
+    spots: [
+      {
+        id: 'c329-caisson',
+        yaw: 0,
+        pitch: 60,
+        kind: 'ceiling',
+        title: { zh: '莲花飞天藻井 · 会旋转的窟顶', en: 'The Revolving Caisson' },
+        facts: [
+          { zh: '五色法轮花心，四飞天同向而飞', en: 'A five-coloured wheel centre, four apsaras flying one way' },
+          { zh: '衣带与蓝云同向，窟顶因此旋转', en: 'Scarves and clouds stream together, setting the vault turning' }
+        ],
+        muralId: 'mural-lotusapsara',
+        thumb: media('detail-cave-329.webp')
+      },
+      {
+        id: 'c329-amitabha',
+        yaw: -90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '南壁 · 阿弥陀经变', en: 'South Wall: The Amitābha Paradise' },
+        narration: {
+          zh: '请把视线放下来，转向左手边南壁。这是一铺阿弥陀经变：净土世界以绿水池潭和楼阁亭台来表现，楼阁之间有飞天往来。请留意水的画法——池水碧绿，水波用细线勾出，倒影清清楚楚。初唐画师画净土，画的其实是他们见过的最好的园林。',
+          en: 'Bring your gaze down and turn to the south wall on your left. This is an Amitābha illustration: the Pure Land rendered as green pools and storied pavilions, apsaras moving between the towers. Watch the water — the pools are malachite green, rippled with fine lines, reflections clear in them. When early Tang painters painted paradise, they were really painting the finest gardens they had ever seen.'
+        },
+        thumb: media('wall-cave-329-s.webp')
+      },
+      {
+        id: 'c329-maitreya',
+        yaw: 90,
+        pitch: 0,
+        kind: 'mural',
+        title: { zh: '北壁 · 弥勒经变', en: 'North Wall: The Maitreya Paradise' },
+        narration: {
+          zh: '转身看北壁，这里画的是弥勒经变：水池和楼阁亭台之间，尽是七宝庄严。弥勒净土的特点是"未来"——经中说，弥勒下生成佛时，人寿八万四千岁，庄稼一种七收。画师把这些细节全画了出来：田地里庄稼茂盛，路不拾遗。这不是一张风景，而是一份关于未来的承诺。',
+          en: 'Turn to the north wall: the Maitreya paradise, its pools and pavilions decked in seven jewels. The Maitreya Pure Land is defined by the future — when Maitreya is born as Buddha, human life will last eighty-four thousand years and one sowing will yield seven harvests. The painter drew these details in: fields thick with grain, roads where nothing is ever lost. This is not a landscape but a promise about the future.'
+        },
+        thumb: media('wall-cave-329-n.webp')
+      }
+    ]
   }
 ];
 

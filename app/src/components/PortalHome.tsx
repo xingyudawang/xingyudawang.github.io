@@ -23,7 +23,7 @@ interface Props {
   onOpenTab: (tab: string) => void;
 }
 
-const ERAS = ['全部', '北魏', '隋代', '初唐', '中唐', '盛唐'] as const;
+const ERAS = ['全部', '北魏', '西魏', '隋代', '初唐', '盛唐', '中唐', '五代', '元代'] as const;
 
 export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab }) => {
   const { language, t, user } = useApp();

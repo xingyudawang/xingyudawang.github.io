@@ -46,7 +46,7 @@ const Shell: React.FC = () => {
   const [caveId, setCaveId] = useState(initial.caveId ?? 'cave-257');
   const [muralId, setMuralId] = useState(initial.muralId ?? 'mural-deer');
 
-  /** Keep the URL in sync so the back button and deep links work on GitHub Pages. */
+  /** Keep the URL in sync for deep links; used for in-place swaps (no history entry). */
   const syncHash = useCallback((next: Tab, nextCave?: string, nextMural?: string) => {
     const params = new URLSearchParams();
     if (next === 'vr') params.set('cave', nextCave ?? caveId);
@@ -64,10 +64,20 @@ const Shell: React.FC = () => {
       if (opts?.caveId) setCaveId(opts.caveId);
       if (opts?.muralId) setMuralId(opts.muralId);
       setTab(next);
-      syncHash(next, opts?.caveId ?? caveId, opts?.muralId ?? muralId);
+
+      // pushState (not replaceState) so the browser / system back gesture also
+      // walks back through the app instead of kicking the user out of it.
+      const params = new URLSearchParams();
+      if (next === 'vr') params.set('cave', opts?.caveId ?? caveId);
+      if (next === 'zoom') params.set('mural', opts?.muralId ?? muralId);
+      const q = params.toString();
+      const hash = `#/${next}${q ? `?${q}` : ''}`;
+      if (window.location.hash !== hash) {
+        window.history.pushState(null, '', hash);
+      }
       window.scrollTo({ top: 0 });
     },
-    [caveId, muralId, syncHash]
+    [caveId, muralId]
   );
 
   // browser back / forward

@@ -16,7 +16,7 @@ const UA = {
 };
 
 const OUT = path.join('assets-src', 'stitched');
-const PUB = path.join('public', 'media');
+const PUB = path.join('..', 'media'); // the repo's single media/ folder
 fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync(PUB, { recursive: true });
 
@@ -207,6 +207,12 @@ const PLAN = {
   '0057': { cave: 'cave-57', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '南壁' },
   '0112': { cave: 'cave-112', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '南壁' },
   '0017': { cave: 'cave-17', walls: { 北壁: 'n', 西壁: 'w' }, ceiling: '北壁', signature: '北壁' },
+  '0220': { cave: 'cave-220', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '东壁' },
+  '0061': { cave: 'cave-61', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '西壁' },
+  '0217': { cave: 'cave-217', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '北壁' },
+  '0323': { cave: 'cave-323', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '北壁' },
+  '0003': { cave: 'cave-3', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '南壁' },
+  '0329': { cave: 'cave-329', walls: { 南壁: 's', 西壁: 'w', 北壁: 'n', 东壁: 'e' }, ceiling: '藻井', signature: '藻井' },
 };
 
 function findSection(cave, needle) {

@@ -93,6 +93,14 @@ export function useGestures<T extends HTMLElement>(
       if (handlersRef.current.enabled === false) return;
       if (ev.pointerType === 'mouse' && ev.button !== 0) return;
 
+      // Never steal presses that start on real controls. The capture below would
+      // otherwise retarget the pointerup to this surface and swallow the click —
+      // the exact bug that made the gallery's back button and hotspot taps dead.
+      const target = ev.target as HTMLElement | null;
+      if (target && target.closest('button, a, input, select, textarea, [role="button"]')) {
+        return;
+      }
+
       pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
       // capture can throw for synthetic pointer ids or detached nodes
       try {

@@ -61,7 +61,10 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
     const el = contentRef.current;
     if (!el) return;
     const { scale, x, y } = transform.current;
-    el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+    // The element is anchored at the stage centre with left-1/2 top-1/2, so the
+    // -50% translate inside the transform is what actually centres it. Without
+    // it the image sat offset down-right by half its size.
+    el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
     el.style.setProperty('--s', String(scale));
     setScaleLabel(scale);
   }, []);
@@ -240,7 +243,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
         <div
           ref={contentRef}
           className="absolute left-1/2 top-1/2 origin-center will-change-transform"
-          style={{ transform: 'translate3d(0,0,0) scale(1)' }}
+          style={{ transform: 'translate3d(0px, 0px, 0) translate(-50%, -50%) scale(1)' }}
         >
           <div className="relative">
             <img

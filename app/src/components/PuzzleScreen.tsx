@@ -73,6 +73,17 @@ const PuzzleBoard: React.FC<{ language: Lang }> = ({ language }) => {
   const mural = MURALS[muralIndex];
   const solved = useMemo(() => tiles.every((t, i) => t === i), [tiles]);
 
+  // the board matches each painting's own proportions, parsed from its scan size
+  const muralAspect = useMemo(() => {
+    const m = mural.scanSize?.match(/(\d+)\s*[×x]\s*(\d+)/);
+    if (m) {
+      const w = Number(m[1]);
+      const h = Number(m[2]);
+      if (w > 0 && h > 0) return w / h;
+    }
+    return 3 / 2;
+  }, [mural.scanSize]);
+
   const shuffle = useCallback(() => {
     const base = Array.from({ length: GRID * GRID }, (_, i) => i);
     // guaranteed-solvable: random swaps from the solved state
@@ -142,12 +153,15 @@ const PuzzleBoard: React.FC<{ language: Lang }> = ({ language }) => {
         ))}
       </div>
 
-      <div className="relative mx-auto w-full max-w-sm">
+      <div
+        className="relative mx-auto w-full max-w-2xl"
+        style={{ width: `min(100%, calc(70svh * ${muralAspect.toFixed(4)}))` }}
+      >
         <div
           className="grid overflow-hidden rounded-xl border-2 border-gold-600/40 bg-ink-700"
           style={{
             gridTemplateColumns: `repeat(${GRID}, 1fr)`,
-            aspectRatio: `${mural.imageUrl ? 3 / 2 : 1}`,
+            aspectRatio: String(muralAspect),
           }}
         >
           {tiles.map((tile, idx) => {
