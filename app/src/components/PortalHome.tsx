@@ -138,40 +138,6 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
               <Grid2x2 className="h-3 w-3 text-gold-300" /> {CAVES.length} 座洞窟
             </span>
           </div>
-
-          {/* the digital human: Nine-Colored Deer */}
-          <button
-            onClick={speakWelcome}
-            className={`mt-4 flex w-full max-w-sm items-center gap-3 rounded-2xl border p-2.5 text-left backdrop-blur transition-colors active:scale-[0.99] ${
-              introSpeaking
-                ? 'border-gold-300 bg-ink-900/70 shadow-[0_0_22px_rgba(229,184,105,0.25)]'
-                : 'border-gold-400/40 bg-ink-900/55'
-            }`}
-          >
-            <GuideAvatar lang={language} speaking={introSpeaking} size={46} />
-            <span className="min-w-0 flex-1">
-              <span className="block text-[12.5px] font-bold text-gold-100">
-                {guideName(language)}
-                <span className="ml-1.5 text-[9.5px] font-normal text-sand-400">{guideRole(language)}</span>
-              </span>
-              <span className="block truncate text-[10.5px] text-sand-300">
-                {introSpeaking
-                  ? '◉ 正在讲解 · 点按可暂停'
-                  : introPaused
-                    ? '▷ 已暂停 · 点按继续'
-                    : '点我，让九色鹿带您开启敦煌之旅'}
-              </span>
-            </span>
-            {introSpeaking ? (
-              <span className="flex items-end gap-0.5 pr-1" aria-hidden="true">
-                <span className="h-1.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '0ms' }} />
-                <span className="h-2 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '120ms' }} />
-                <span className="h-2.5 w-0.5 animate-pulse rounded-full bg-gold-300" style={{ animationDelay: '240ms' }} />
-              </span>
-            ) : (
-              <Volume2 className={`h-4 w-4 shrink-0 ${introPaused ? 'text-sand-400' : 'text-gold-300'}`} />
-            )}
-          </button>
         </div>
       </section>
 
@@ -386,6 +352,39 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
           数字壁画为艺术再现，原作藏于敦煌莫高窟
         </p>
       </footer>
+
+      {/* ---------------- the digital human: Nine-Colored Deer (bottom-right) ---------------- */}
+      <button
+        onClick={speakWelcome}
+        aria-label="九色鹿 · 数字讲解员"
+        className="group fixed right-4 z-30 flex flex-col items-center"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 4.6rem)' }}
+      >
+        <span
+          className={`pointer-events-none mb-1.5 max-w-[150px] rounded-xl border px-2 py-1 text-center text-[10px] leading-snug backdrop-blur-md transition-all duration-300 ${
+            introSpeaking || introPaused
+              ? 'border-gold-400/50 bg-ink-900/90 text-gold-200 opacity-100'
+              : 'border-gold-400/25 bg-ink-900/75 text-sand-300 opacity-0 group-active:opacity-100'
+          }`}
+        >
+          {introSpeaking ? '九色鹿讲解中 · 点按暂停' : introPaused ? '已暂停 · 点按继续' : '九色鹿 · 带您逛敦煌'}
+        </span>
+        <span className="relative block h-[72px] w-[72px]">
+          {introSpeaking && (
+            <span className="absolute inset-0 animate-ping rounded-full border border-gold-300/50" style={{ animationDuration: '1.8s' }} />
+          )}
+          <img
+            src={media('deer-mascot.webp')}
+            alt="九色鹿"
+            loading="eager"
+            className="relative h-full w-full animate-float rounded-full border-2 border-gold-400/70 object-cover shadow-[0_6px_24px_rgba(0,0,0,0.6),0_0_18px_rgba(229,184,105,0.25)] transition-transform group-active:scale-90"
+            style={{ animationDuration: '5s' }}
+          />
+          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-ink-800 bg-ink-700 px-1.5 py-px text-[8px] whitespace-nowrap text-gold-300">
+            {guideName(language)}
+          </span>
+        </span>
+      </button>
     </div>
   );
 };

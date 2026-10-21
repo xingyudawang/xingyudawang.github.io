@@ -43,9 +43,33 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
   const [activeHotspot, setActiveHotspot] = useState<Mural['hotspots'][number] | null>(null);
   const [narrationState, setNarrationState] = useState<NarrationState>(() => narration.getState());
   const [loaded, setLoaded] = useState(false);
+  // user-corrected hotspot positions (persisted per mural)
+  const [editMode, setEditMode] = useState(false);
+  const [overrides, setOverrides] = useState<Record<string, Record<string, { x: number; y: number }>>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('dh_hotspot_overrides') ?? '{}');
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('dh_hotspot_overrides', JSON.stringify(overrides));
+    } catch {
+      /* noop */
+    }
+  }, [overrides]);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const markerDragRef = useRef<{
+    id: string;
+    startX: number;
+    startY: number;
+    origX: number;
+    origY: number;
+  } | null>(null);
 
   const transform = useRef({ scale: 1, x: 0, y: 0 });
   const gestureStart = useRef({ scale: 1, x: 0, y: 0 });
@@ -55,6 +79,25 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
     () => MURALS.find((m) => m.id === initialMuralId) ?? MURALS[0],
     [initialMuralId]
   );
+
+  // the markers actually shown: defaults plus any user corrections
+  const displayedHotspots = useMemo(
+    () =>
+      mural.hotspots.map((h) => {
+        const o = overrides[mural.id]?.[h.id];
+        return o ? { ...h, x: o.x, y: o.y } : h;
+      }),
+    [mural, overrides]
+  );
+
+  const clearOverrides = () => {
+    setOverrides((prev) => {
+      const next = { ...prev };
+      delete next[mural.id];
+      return next;
+    });
+    confirmFeedback();
+  };
 
   useEffect(() => narration.subscribe(setNarrationState), []);
 
@@ -179,12 +222,45 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
     if (!stage || !el) return null;
     const sr = stage.getBoundingClientRect();
     const er = el.getBoundingClientRect();
-    for (const hs of mural.hotspots) {
+    for (const hs of displayedHotspots) {
       const hx = er.left + (hs.x / 100) * er.width - sr.left;
       const hy = er.top + (hs.y / 100) * er.height - sr.top;
       if ((hx - sx) ** 2 + (hy - sy) ** 2 < 38 * 38) return hs;
     }
     return null;
+  };
+
+  /* ---------------- marker correction (drag to fix positions) ---------------- */
+  const beginMarkerDrag = (e: React.PointerEvent, id: string) => {
+    if (!editMode) return;
+    e.stopPropagation();
+    const hs = displayedHotspots.find((h) => h.id === id);
+    if (!hs) return;
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    } catch {
+      /* noop */
+    }
+    markerDragRef.current = { id, startX: e.clientX, startY: e.clientY, origX: hs.x, origY: hs.y };
+  };
+
+  const moveMarker = (e: React.PointerEvent) => {
+    const d = markerDragRef.current;
+    const el = contentRef.current;
+    if (!d || !el) return;
+    const rect = el.getBoundingClientRect(); // transformed box on screen
+    const dxPct = ((e.clientX - d.startX) / rect.width) * 100;
+    const dyPct = ((e.clientY - d.startY) / rect.height) * 100;
+    const x = Math.min(97, Math.max(3, d.origX + dxPct));
+    const y = Math.min(97, Math.max(3, d.origY + dyPct));
+    setOverrides((prev) => ({
+      ...prev,
+      [mural.id]: { ...prev[mural.id], [d.id]: { x, y } },
+    }));
+  };
+
+  const endMarkerDrag = () => {
+    markerDragRef.current = null;
   };
 
   useEffect(() => {
@@ -266,16 +342,22 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
               draggable={false}
               className="absolute inset-0 block max-h-[calc(100svh-11rem)] max-w-[100vw] select-none object-contain opacity-0 transition-opacity duration-500"
             />
-            {/* hotspot markers live inside the transformed layer so they track the painting */}
-            {mural.hotspots.map((hs) => (
+            {/* hotspot markers live inside the transformed layer so they track the painting.
+                They never swallow gestures: taps are hit-tested by the stage itself, so a
+                drag that starts on a marker still pans the painting. */}
+            {displayedHotspots.map((hs) => (
               <button
                 key={hs.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveHotspot(hs);
-                  tapFeedback(14);
-                }}
-                className="absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-gold-300 bg-ink-800/80 text-gold-200 shadow-[0_0_14px_rgba(229,184,105,0.5)] backdrop-blur-sm animate-hotspot"
+                onPointerDown={(e) => beginMarkerDrag(e, hs.id)}
+                onPointerMove={moveMarker}
+                onPointerUp={endMarkerDrag}
+                onPointerCancel={endMarkerDrag}
+                tabIndex={-1}
+                className={`absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 backdrop-blur-sm animate-hotspot ${
+                  editMode
+                    ? 'cursor-move border-dashed border-gold-200 bg-ink-700/90 text-gold-100'
+                    : 'pointer-events-none border-gold-300 bg-ink-800/80 text-gold-200 shadow-[0_0_14px_rgba(229,184,105,0.5)]'
+                }`}
                 style={{
                   left: `${hs.x}%`,
                   top: `${hs.y}%`,
@@ -409,7 +491,40 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
           <span className="ml-1 self-center text-[10px] text-sand-500">
             {modes.find((m) => m.id === viewMode)?.hint}
           </span>
+
+          {/* hotspot correction */}
+          <div className="ml-auto flex items-center gap-1.5">
+            {editMode && (
+              <button
+                onClick={clearOverrides}
+                className="flex h-7 items-center gap-1 rounded-lg border border-ink-300 bg-ink-700 px-2 text-[10.5px] text-sand-300 active:scale-95"
+              >
+                重置
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setEditMode((v) => !v);
+                setActiveHotspot(null);
+                if (editMode) confirmFeedback();
+                else tapFeedback();
+              }}
+              className={`flex h-7 items-center gap-1 rounded-lg border px-2 text-[10.5px] active:scale-95 ${
+                editMode
+                  ? 'border-gold-300 bg-gold-600/30 font-bold text-gold-100'
+                  : 'border-ink-300 bg-ink-700 text-sand-300'
+              }`}
+            >
+              {editMode ? '✓ 保存点位' : '校正点位'}
+            </button>
+          </div>
         </div>
+
+        {editMode && (
+          <div className="px-3 pb-2 text-center text-[10.5px] text-gold-300">
+            拖动金色光点校正位置（双指缩放后可更精确）· 位置会自动保存
+          </div>
+        )}
 
         {/* title + narration */}
         <div className="px-3 pb-2.5">
