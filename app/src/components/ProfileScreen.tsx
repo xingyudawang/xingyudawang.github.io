@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Brush, Download, Image as ImageIcon, Languages, Palette, Sun, Trash2, X } from 'lucide-react';
 import { MURALS } from '../data/dunhuangData';
 import { loc } from '../data/caveScenes';
-import { media } from '../lib/media';
+import { media, thumb } from '../lib/media';
 import { useApp, type Language, type ThemeMode } from '../context/AppContext';
 import { confirmFeedback, tapFeedback } from '../lib/haptics';
 
@@ -75,7 +75,7 @@ export const ProfileScreen: React.FC<Props> = ({ onOpenMural, onOpenTab }) => {
                 }}
                 className="relative aspect-[3/4] w-[36vw] max-w-[160px] overflow-hidden rounded-xl border border-gold-600/30 active:scale-95"
               >
-                <img src={m.imageUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
+                <img src={thumb(m.imageUrl)} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-900/90 to-transparent" />
                 <p className="absolute inset-x-1.5 bottom-1.5 font-serif-sc text-[10.5px] font-bold text-gold-100">
                   {loc(m.title, language)}

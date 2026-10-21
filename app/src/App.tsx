@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import {
   Brush,
   Compass,
@@ -9,14 +9,30 @@ import {
 } from 'lucide-react';
 import { AppProvider, useApp } from './context/AppContext';
 import { PortalHome } from './components/PortalHome';
-import { CavePanorama } from './components/CavePanorama';
-import { DeepZoomGallery } from './components/DeepZoomGallery';
-import { DrawingStudio } from './components/DrawingStudio';
 import { EncyclopediaScreen } from './components/EncyclopediaScreen';
 import { PuzzleScreen } from './components/PuzzleScreen';
 import { ProfileScreen } from './components/ProfileScreen';
 import { narration } from './lib/narration';
 import { tapFeedback } from './lib/haptics';
+
+// The WebGL cave, the deep-zoom stage and the paint studio are heavy (three.js,
+// perfect-freehand) — load them on demand so the first paint of the portal
+// stays small and fast.
+const CavePanorama = lazy(() =>
+  import('./components/CavePanorama').then((m) => ({ default: m.CavePanorama }))
+);
+const DeepZoomGallery = lazy(() =>
+  import('./components/DeepZoomGallery').then((m) => ({ default: m.DeepZoomGallery }))
+);
+const DrawingStudio = lazy(() =>
+  import('./components/DrawingStudio').then((m) => ({ default: m.DrawingStudio }))
+);
+
+const RouteLoader: React.FC = () => (
+  <div className="flex h-full w-full items-center justify-center bg-ink-800">
+    <div className="h-10 w-10 animate-spin rounded-full border-2 border-gold-400/25 border-t-gold-300" />
+  </div>
+);
 
 type Tab = 'portal' | 'vr' | 'zoom' | 'workshop' | 'encyclopedia' | 'game' | 'profile';
 
@@ -114,47 +130,49 @@ const Shell: React.FC = () => {
   return (
     <div className={`flex h-[100svh] w-full flex-col overflow-hidden ${shellTone}`}>
       <main className="relative min-h-0 flex-1 overflow-hidden">
-        {tab === 'portal' && (
-          <PortalHome
-            onOpenCave={(id) => go('vr', { caveId: id })}
-            onOpenMural={(id) => go('zoom', { muralId: id })}
-            onOpenTab={(next) => go(next as Tab)}
-          />
-        )}
+        <Suspense fallback={<RouteLoader />}>
+          {tab === 'portal' && (
+            <PortalHome
+              onOpenCave={(id) => go('vr', { caveId: id })}
+              onOpenMural={(id) => go('zoom', { muralId: id })}
+              onOpenTab={(next) => go(next as Tab)}
+            />
+          )}
 
-        {tab === 'vr' && (
-          <CavePanorama
-            caveId={caveId}
-            language={language}
-            onBack={() => go('portal')}
-            onSelectCave={(id) => go('vr', { caveId: id })}
-            onOpenMural={(id) => go('zoom', { muralId: id })}
-          />
-        )}
+          {tab === 'vr' && (
+            <CavePanorama
+              caveId={caveId}
+              language={language}
+              onBack={() => go('portal')}
+              onSelectCave={(id) => go('vr', { caveId: id })}
+              onOpenMural={(id) => go('zoom', { muralId: id })}
+            />
+          )}
 
-        {tab === 'zoom' && (
-          <DeepZoomGallery
-            initialMuralId={muralId}
-            onBack={() => go('portal')}
-            onSelectMural={(id) => {
-              setMuralId(id);
-              syncHash('zoom', caveId, id);
-            }}
-          />
-        )}
+          {tab === 'zoom' && (
+            <DeepZoomGallery
+              initialMuralId={muralId}
+              onBack={() => go('portal')}
+              onSelectMural={(id) => {
+                setMuralId(id);
+                syncHash('zoom', caveId, id);
+              }}
+            />
+          )}
 
-        {tab === 'workshop' && <DrawingStudio onBack={() => go('portal')} />}
+          {tab === 'workshop' && <DrawingStudio onBack={() => go('portal')} />}
 
-        {tab === 'encyclopedia' && <EncyclopediaScreen onBack={() => go('portal')} />}
+          {tab === 'encyclopedia' && <EncyclopediaScreen onBack={() => go('portal')} />}
 
-        {tab === 'game' && <PuzzleScreen onBack={() => go('portal')} />}
+          {tab === 'game' && <PuzzleScreen onBack={() => go('portal')} />}
 
-        {tab === 'profile' && (
-          <ProfileScreen
-            onOpenMural={(id) => go('zoom', { muralId: id })}
-            onOpenTab={(next) => go(next as Tab)}
-          />
-        )}
+          {tab === 'profile' && (
+            <ProfileScreen
+              onOpenMural={(id) => go('zoom', { muralId: id })}
+              onOpenTab={(next) => go(next as Tab)}
+            />
+          )}
+        </Suspense>
       </main>
 
       {/* bottom navigation (mobile-first) */}

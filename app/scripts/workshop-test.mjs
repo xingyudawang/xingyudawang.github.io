@@ -80,6 +80,9 @@ async function touch(events) {
   for (const ev of events) await send('Input.dispatchTouchEvent', ev);
 }
 
+// warm-up: same-origin hop so the harness evaluates in the right context
+await send('Page.navigate', { url: `${BASE}/` });
+await sleep(2500);
 await send('Page.navigate', { url: `${BASE}/#/workshop` });
 await sleep(6000);
 

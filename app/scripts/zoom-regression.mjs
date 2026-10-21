@@ -75,8 +75,19 @@ const record = (name, pass, detail) => {
 };
 
 /* ---- 1 + 2: deep zoom ---- */
+// warm-up: navigate to the origin first so later hash navigations stay in the
+// same execution context (the harness evaluates against a stale context when the
+// first hop is cross-origin from about:blank)
+await send('Page.navigate', { url: `${BASE}/` });
+await sleep(2500);
 await send('Page.navigate', { url: `${BASE}/#/zoom?mural=mural-deer` });
-await sleep(3500);
+// cold lazy-chunk load: poll until the stage appears
+for (let i = 0; i < 14; i++) {
+  const ready = await evaluate(`!!document.querySelector('main .relative.min-h-0.flex-1 img')`);
+  if (ready) break;
+  await sleep(800);
+}
+await sleep(1200);
 
 const geometry = await evaluate(`(() => {
   const stage = document.querySelector('main .relative.min-h-0.flex-1');

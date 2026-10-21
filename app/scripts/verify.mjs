@@ -113,7 +113,8 @@ const ROUTES = [
 for (const [hash, label, expr] of ROUTES) {
   cdp.events.length = 0;
   await cdp.send('Page.navigate', { url: `${BASE}/${hash}` });
-  await sleep(2600);
+  // lazy chunks (three.js et al.) need a little longer on a cold cache
+  await sleep(5200);
 
   let value = null;
   try {

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { media } from '../lib/media';
+import { media, thumb } from '../lib/media';
 import type { CaveScene } from '../data/caveScenes';
 
 export interface SpotProjection {
@@ -73,7 +73,7 @@ export class CaveEngine {
   /** wall panels awaiting their texture's real aspect ratio (known only after load) */
   private pendingPanels: Array<{
     geo: THREE.BufferGeometry;
-    sourceAspect: number;
+    texture: THREE.Texture;
     surfaceAspect: number;
   }> = [];
 
@@ -116,15 +116,44 @@ export class CaveEngine {
   /* Scene construction                                                  */
   /* ------------------------------------------------------------------ */
 
-  private loadTexture(url: string): THREE.Texture {
-    const tex = this.textureLoader.load(url);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.generateMipmaps = true;
-    tex.minFilter = THREE.LinearMipmapLinearFilter;
-    tex.magFilter = THREE.LinearFilter;
-    tex.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
-    this.disposables.push(tex);
-    return tex;
+  /**
+   * Two-stage texture loading for perceived speed: paint the 640px preview the
+   * instant it arrives (a few dozen KB), then swap in the full scan when it
+   * finishes. The cave is readable immediately and sharpens in place.
+   */
+  private loadTextureInto(
+    mat: THREE.MeshBasicMaterial,
+    url: string,
+    thumbUrl?: string
+  ): THREE.Texture {
+    const configure = (tex: THREE.Texture) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.generateMipmaps = true;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
+      this.disposables.push(tex);
+    };
+
+    let fullArrived = false;
+    const fullTex = this.textureLoader.load(url, (t) => {
+      fullArrived = true;
+      mat.map = t;
+      mat.needsUpdate = true;
+    });
+    configure(fullTex);
+
+    if (thumbUrl) {
+      const thumbTex = this.textureLoader.load(thumbUrl, (t) => {
+        if (!fullArrived) {
+          mat.map = t;
+          mat.needsUpdate = true;
+        }
+      });
+      configure(thumbTex);
+    }
+
+    return fullTex;
   }
 
   /**
@@ -161,7 +190,10 @@ export class CaveEngine {
   /** Apply deferred UV fitting once every wall texture has real dimensions. */
   private applyPendingUV() {
     for (const panel of this.pendingPanels) {
-      this.fitPanelUV(panel.geo, panel.sourceAspect, panel.surfaceAspect);
+      const image = panel.texture.image as HTMLImageElement | undefined;
+      const sourceAspect =
+        image && image.width && image.height ? image.width / image.height : 16 / 9;
+      this.fitPanelUV(panel.geo, sourceAspect, panel.surfaceAspect);
     }
     this.pendingPanels = [];
   }
@@ -187,18 +219,15 @@ export class CaveEngine {
       const thetaLength = yawB - yawA;
 
       const geo = new THREE.CylinderGeometry(radius, radius, height, SEG, 1, true, thetaStart, thetaLength);
-      const texture = this.loadTexture(sceneData.walls[i]);
-      const image = texture.image as HTMLImageElement | undefined;
-      const sourceAspect =
-        image && image.width && image.height ? image.width / image.height : 16 / 9;
-
       const mat = new THREE.MeshBasicMaterial({
-        map: texture,
+        color: 0x241a12,
         side: THREE.BackSide,
         toneMapped: false,
       });
+      const fullTex = this.loadTextureInto(mat, sceneData.walls[i], thumb(sceneData.walls[i]));
+
       const mesh = new THREE.Mesh(geo, mat);
-      this.pendingPanels.push({ geo, sourceAspect, surfaceAspect });
+      this.pendingPanels.push({ geo, surfaceAspect, texture: fullTex });
       this.root.add(mesh);
       this.disposables.push(geo, mat);
     }
@@ -206,10 +235,11 @@ export class CaveEngine {
     // ---- Painted caisson ceiling -------------------------------------
     const ceilGeo = new THREE.CircleGeometry(radius, 72);
     const ceilMat = new THREE.MeshBasicMaterial({
-      map: this.loadTexture(sceneData.ceiling),
+      color: 0x241a12,
       side: THREE.DoubleSide,
       toneMapped: false,
     });
+    this.loadTextureInto(ceilMat, sceneData.ceiling, thumb(sceneData.ceiling));
     const ceiling = new THREE.Mesh(ceilGeo, ceilMat);
     ceiling.rotation.x = Math.PI / 2;
     ceiling.position.y = halfH;
@@ -228,7 +258,7 @@ export class CaveEngine {
     this.root.add(floor);
     this.disposables.push(floorGeo, floorMat);
 
-    const floorTex = this.loadTexture(media('cave-floor.webp'));
+    const floorTex = this.loadTextureInto(floorMat, media('cave-floor.webp'), thumb(media('cave-floor.webp')));
     floorTex.wrapS = THREE.RepeatWrapping;
     floorTex.wrapT = THREE.RepeatWrapping;
     floorTex.repeat.set(2, 2);
@@ -241,9 +271,10 @@ export class CaveEngine {
       const side = p.radius * 2;
       const geo = new THREE.BoxGeometry(side, p.height, side);
       const mat = new THREE.MeshBasicMaterial({
-        map: this.loadTexture(p.texture),
+        color: 0x241a12,
         toneMapped: false,
       });
+      this.loadTextureInto(mat, p.texture, thumb(p.texture));
       const pillar = new THREE.Mesh(geo, mat);
       pillar.rotation.y = Math.PI / 4;
       this.root.add(pillar);

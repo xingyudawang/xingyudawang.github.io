@@ -103,8 +103,13 @@ async function swipe(from, to, steps = 12) {
 const results = [];
 
 /* ---------------- 1. 360° panorama: horizontal swipe rotates the view ------- */
+// warm-up: same-origin hop so the harness evaluates in the right context
+await send('Page.navigate', { url: `${BASE}/` });
+await sleep(2500);
 await send('Page.navigate', { url: `${BASE}/#/vr?cave=cave-257` });
 await sleep(5000);
+// hide projected hotspot markers so a swipe can never land on a button
+await evaluate(`[...document.querySelectorAll('.animate-hotspot')].forEach(b => b.style.display = 'none')`);
 const panoBefore = await shot();
 await swipe({ x: 90, y: 430 }, { x: 320, y: 430 });
 await sleep(1200);

@@ -18,6 +18,7 @@ import {
 import { MURALS, type Mural } from '../data/dunhuangData';
 import { loc, type Lang } from '../data/caveScenes';
 import { useGestures } from '../lib/useGestures';
+import { thumb } from '../lib/media';
 import { narration, type NarrationState } from '../lib/narration';
 import { tapFeedback, confirmFeedback } from '../lib/haptics';
 import { useApp } from '../context/AppContext';
@@ -246,12 +247,23 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
           style={{ transform: 'translate3d(0px, 0px, 0) translate(-50%, -50%) scale(1)' }}
         >
           <div className="relative">
+            {/* blurred 640px preview shows instantly; the full scan fades over it */}
+            <img
+              src={thumb(imageUrl)}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              className="block max-h-[calc(100svh-11rem)] max-w-[100vw] scale-105 select-none object-contain blur-md"
+            />
             <img
               src={imageUrl}
               alt={loc(mural.title, language)}
-              onLoad={() => setLoaded(true)}
+              onLoad={(e) => {
+                setLoaded(true);
+                e.currentTarget.style.opacity = '1';
+              }}
               draggable={false}
-              className="block max-h-[calc(100svh-11rem)] max-w-[100vw] select-none object-contain"
+              className="absolute inset-0 block max-h-[calc(100svh-11rem)] max-w-[100vw] select-none object-contain opacity-0 transition-opacity duration-500"
             />
             {/* hotspot markers live inside the transformed layer so they track the painting */}
             {mural.hotspots.map((hs) => (

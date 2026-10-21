@@ -3,6 +3,7 @@ import { ArrowLeft, Eye, HelpCircle, RotateCcw, Trophy } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { MURALS, CULTURAL_QUIZ } from '../data/dunhuangData';
 import { loc, type Lang } from '../data/caveScenes';
+import { thumb } from '../lib/media';
 import { tapFeedback, confirmFeedback } from '../lib/haptics';
 import { useApp } from '../context/AppContext';
 
@@ -175,7 +176,7 @@ const PuzzleBoard: React.FC<{ language: Lang }> = ({ language }) => {
                   selected === idx ? 'z-10 scale-[0.94] ring-2 ring-gold-200' : ''
                 } ${solved ? '' : 'active:scale-95'}`}
                 style={{
-                  backgroundImage: `url(${mural.imageUrl})`,
+                  backgroundImage: `url(${thumb(mural.imageUrl)})`,
                   backgroundSize: `${GRID * 100}% ${GRID * 100}%`,
                   backgroundPosition: `${(col / (GRID - 1)) * 100}% ${(row / (GRID - 1)) * 100}%`,
                 }}

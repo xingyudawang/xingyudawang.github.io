@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { CAVES, MURALS } from '../data/dunhuangData';
 import { loc, type Lang } from '../data/caveScenes';
-import { media } from '../lib/media';
+import { media, thumb } from '../lib/media';
 import { useApp } from '../context/AppContext';
 import { tapFeedback } from '../lib/haptics';
 
@@ -43,10 +43,18 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
     <div className="h-full w-full overflow-y-auto overscroll-contain pb-8">
       {/* ---------------- hero ---------------- */}
       <section className="relative h-[62svh] min-h-[380px] w-full overflow-hidden">
+        {/* instant blurred preview, then the full hero fades in */}
+        <img
+          src={thumb(media('mural-cave-320.webp'))}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full scale-105 object-cover blur-md"
+        />
         <img
           src={media('mural-cave-320.webp')}
           alt="莫高窟第320窟 散花飞天"
-          className="absolute inset-0 h-full w-full object-cover"
+          onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700"
           fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-900/45 via-ink-900/35 to-ink-800" />
@@ -177,9 +185,10 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <img
-                  src={cave.coverImage}
+                  src={thumb(cave.coverImage)}
                   alt={loc(cave.name, language)}
                   loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-800 via-ink-800/25 to-transparent" />
@@ -232,9 +241,10 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
               className="relative aspect-[3/4] w-[42vw] max-w-[190px] overflow-hidden rounded-xl border border-gold-600/25 active:scale-95"
             >
               <img
-                src={m.imageUrl}
+                src={thumb(m.imageUrl)}
                 alt={loc(m.title, language)}
                 loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent" />
@@ -259,7 +269,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
           className="relative w-full overflow-hidden rounded-2xl border border-gold-600/30 text-left active:scale-[0.99]"
         >
           <img
-            src={media('hero-mural-bg.webp')}
+            src={thumb(media('hero-mural-bg.webp'))}
             alt=""
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover opacity-70"

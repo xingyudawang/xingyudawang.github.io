@@ -348,8 +348,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-deer-1',
-        x: 46,
-        y: 44,
+        x: 58,
+        y: 66,
         title: { zh: '神鹿昂首 · 无惧箭雨', en: 'The Deer Stands Unafraid' },
         description: {
           zh: '鹿身修长，鹿角如珊瑚枝杈，四足稳踏于浪头。画师用一根根匀细的墨线勾出形体，再以白色铺底，使神鹿在赭红壁面上如发光一般。',
@@ -359,8 +359,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-deer-2',
-        x: 78,
-        y: 50,
+        x: 76,
+        y: 64,
         title: { zh: '王后梦鹿 · 宫室作分镜', en: 'The Queen\'s Dream' },
         description: {
           zh: '王后斜倚于宫中，头顶是建筑的屋顶。画师以屋顶轮廓充当"分镜线"，在同一幅画面里并置宫室与山林两个空间，比电影的蒙太奇早了近一千年。',
@@ -369,8 +369,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-deer-3',
-        x: 16,
-        y: 52,
+        x: 22,
+        y: 66,
         title: { zh: '国王闻法 · 举国护鹿', en: 'The King\'s Decree' },
         description: {
           zh: '国王与随从列于左侧，听完神鹿陈述后合掌致意。这一段把"慈悲"从情节变成了看得见的姿态：不是神迹，而是一次被说服的让步。',
@@ -415,7 +415,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-tigress-1',
         x: 50,
-        y: 52,
+        y: 60,
         title: { zh: '母虎与七子', en: 'The Tigress and Her Cubs' },
         description: {
           zh: '画面中心是饿极的母虎与七只幼虎，线条瘦硬如刻。画师把最暗的墨色集中于此，让整个故事的重心在视觉上"沉"下去。',
@@ -425,8 +425,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-tigress-2',
-        x: 26,
-        y: 34,
+        x: 30,
+        y: 32,
         title: { zh: '刺颈投崖', en: 'The Cut and the Leap' },
         description: {
           zh: '太子立于崖上，举手刺颈。请注意他的身体被拉成一条近乎笔直的斜线——不是写实的人体，而是一个"决定"的形状。',
@@ -435,8 +435,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-tigress-3',
-        x: 72,
-        y: 70,
+        x: 76,
+        y: 58,
         title: { zh: '父母哭尸 · 起塔供养', en: 'Mourning and the Stupa' },
         description: {
           zh: '右下角是父母抚尸痛哭的场景，随后在左侧转为起塔供养。北魏画师处理悲伤时并不夸张面部，而是让人物的整个身体塌陷下去。',
@@ -481,7 +481,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-xwm-1',
         x: 50,
-        y: 22,
+        y: 16,
         title: { zh: '天宫伎乐 · 栏墙之上', en: 'Musicians Above the Balustrade' },
         description: {
           zh: '乐伎半身探出栏墙，手持排箫、琵琶、腰鼓。栏墙与垂幔被画成一条连续的水平线，把整壁上方切成一条"天界的阳台"。',
@@ -491,8 +491,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-xwm-2',
-        x: 32,
-        y: 62,
+        x: 35,
+        y: 34,
         title: { zh: '飞天 · 天衣飞扬', en: 'Apsaras in Flying Silk' },
         description: {
           zh: '飞天的身体并不靠翅膀，而靠飘带的形状飞起来。请看她身后拖出的几条长线——方向一致、弧度渐收，画师用一条带子就造出了风。',
@@ -536,7 +536,7 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-bandit-1',
-        x: 24,
+        x: 18,
         y: 50,
         title: { zh: '交战与被俘', en: 'Battle and Capture' },
         description: {
@@ -547,8 +547,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-bandit-2',
-        x: 56,
-        y: 46,
+        x: 45,
+        y: 52,
         title: { zh: '剜眼与山中哀号', en: 'Blinding and Lamentation' },
         description: {
           zh: '中段是盲人被逐入山林后的场景。画师用青绿山峦把他们一圈圈围住——山在这里不是风景，而是"囚禁"。',
@@ -557,8 +557,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-bandit-3',
-        x: 80,
-        y: 44,
+        x: 82,
+        y: 48,
         title: { zh: '佛陀说法 · 复明出家', en: 'The Sermon and the Restored Sight' },
         description: {
           zh: '右侧佛陀现身，五百人合掌跪坐。请注意画师的处理：他没有画出"奇迹"的瞬间，只画了听闻之后的安静——眼睛的复明被留在了画外。',
@@ -582,10 +582,10 @@ export const MURALS: Mural[] = [
     eraPeriod: '公元6世纪末',
     category: 'caisson',
     dimensions: '主室窟顶 · 藻井与四披',
-    imageUrl: media('mural-cave-420.webp'),
-    detailUrl: media('detail-cave-420.webp'),
+    imageUrl: media('ceiling-cave-420.webp'),
+    detailUrl: media('encyc-caisson.webp'),
     lineArtUrl: media('wash-threehares.webp'),
-    scanSize: '22601 × 17467 px',
+    scanSize: '4108 × 3887 px',
     description: {
       zh: '隋代覆斗顶窟的顶点。藻井井心画三兔共耳：三只奔兔首尾相接，只绘三只耳朵，两两共用，而每只兔子看上去都有双耳。方井四角绘童子形飞天，外岔绘有翼瑞兽，边框饰忍冬、狮子与联珠纹。四披则满绘《法华经》经变。',
       en: 'The summit of Sui cave design. At the centre of the caisson, three hares chase one another sharing three ears between them, yet each appears to have two. Child-like apsaras occupy the corners of the square well, winged auspicious beasts the outer spandrels, and honeysuckle, lions and beaded strings the borders. The four slopes are filled with Lotus Sutra illustrations.',
@@ -603,7 +603,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-hares-1',
         x: 50,
-        y: 18,
+        y: 46,
         title: { zh: '三兔共耳 · 三耳六耳的魔术', en: 'Three Hares, Three Ears' },
         description: {
           zh: '三只兔子首尾相接奔跑，耳朵两两重叠——每只都"借用"了邻居的一只，却让每一只看起来都完整。这是一种极高级的共用形构图。',
@@ -614,19 +614,19 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-hares-2',
         x: 50,
-        y: 58,
-        title: { zh: '观音普门品 · 诸难救济', en: 'Deliverance from Every Peril' },
+        y: 82,
+        title: { zh: '忍冬狮子联珠边框', en: 'Honeysuckle, Lions and Beaded Border' },
         description: {
-          zh: '藻井以下的披面画《观音普门品》：火难、水难、罗刹难、刀杖难、牢狱难……一格一难，观世音在每一格中现身相救，是一份用图绘成的"应急清单"。',
-          en: 'Below the caisson the slopes illustrate the Guanyin chapter: fire, flood, demons, blades, prison — one peril per scene, with Avalokitesvara appearing in each to rescue. It is effectively an illustrated emergency list.',
+          zh: '井心四周层层收拢的边框：忍冬卷草、狮子与联珠纹依次铺开，最外一圈垂幔。每一层纹样不同，但节奏统一——像同一首曲子换了乐器。',
+          en: 'Around the centre, the borders close ring by ring: honeysuckle scroll, lions and beaded strings, with a valance outermost. Each band is different, but their rhythm is one — the same tune on different instruments.',
         },
       },
     ],
     audioGuide: {
       duration: '1分10秒',
       transcripts: {
-        zh: '请抬头看窟顶正中的藻井。三只兔子正在互相追逐，首尾相接，围成一个环。奇怪的是：每只兔子看起来都有两只耳朵，可整幅画上一共只画了三只耳朵——它们两两共用。这在一千五百年前是一个极高级的图形智慧，叫做"共用形"。更奇妙的是，同样的图案也出现在中亚的金属器、伊朗的瓷砖、欧洲中世纪教堂的彩窗上。一条丝绸之路，把这个图形从敦煌带向了整个世界。它究竟代表什么？三世轮回？日月运行？还是单纯的"无穷"？至今没有定论。藻井以下的披面上，画满了《法华经·观音普门品》的诸难救济：火难、水难、罗刹难、刀杖难、牢狱难，一格一难，观音在每一格中现身相救。换句话说，这是一份用图画写成的"应急清单"。',
-        en: 'Look up at the caisson at the centre of the ceiling. Three hares are chasing one another nose to tail in a ring. Strangely, each hare appears to have two ears, yet the whole design contains only three — they share them in pairs. Fifteen centuries ago that was an extraordinary piece of visual intelligence, which designers call shared form. More remarkable still, the same figure turns up on Central Asian metalwork, on Iranian tiles, and in the stained glass of medieval European churches. The Silk Road carried it from Dunhuang out across the world. What does it mean? The cycle of three lives, the motion of sun and moon, or simply infinity? Nobody has settled it. And on the slopes below, the ceiling is packed with the Guanyin chapter of the Lotus Sutra: fire, flood, demons, blades, prison — one peril per scene, Avalokitesvara appearing in each to save. In other words, an illustrated emergency list.',
+        zh: '请抬头看窟顶正中的藻井。三只兔子正在互相追逐，首尾相接，围成一个环。奇怪的是：每只兔子看起来都有两只耳朵，可整幅画上一共只画了三只耳朵——它们两两共用。这在一千五百年前是一个极高级的图形智慧，叫做"共用形"。更奇妙的是，同样的图案也出现在中亚的金属器、伊朗的瓷砖、欧洲中世纪教堂的彩窗上。一条丝绸之路，把这个图形从敦煌带向了整个世界。它究竟代表什么？三世轮回？日月运行？还是单纯的"无穷"？至今没有定论。再把目光移到井心四周的边框：忍冬卷草、狮子与联珠纹一圈一圈向中心收拢，每一层纹样不同，节奏却完全统一——像同一首曲子换了乐器。',
+        en: 'Look up at the caisson at the centre of the ceiling. Three hares are chasing one another nose to tail in a ring. Strangely, each hare appears to have two ears, yet the whole design contains only three — they share them in pairs. Fifteen centuries ago that was an extraordinary piece of visual intelligence, which designers call shared form. More remarkable still, the same figure turns up on Central Asian metalwork, on Iranian tiles, and in the stained glass of medieval European churches. The Silk Road carried it from Dunhuang out across the world. What does it mean? The cycle of three lives, the motion of sun and moon, or simply infinity? Nobody has settled it. Now move your eye to the borders closing in on the centre: honeysuckle scroll, lions and beaded strings, ring upon ring — every band different, yet their rhythm is one, like the same tune played on different instruments.',
       },
     },
   },
@@ -658,8 +658,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-apsara-1',
-        x: 38,
-        y: 30,
+        x: 36,
+        y: 17,
         title: { zh: '散花的手 · 一个动作的重量', en: 'The Scattering Hand' },
         description: {
           zh: '飞天的右手向前舒开，指尖微扬，花瓣正从掌中落下。请注意这只手并没有真的"用力"，画师让动作停在将散未散的一刻。',
@@ -669,8 +669,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-apsara-2',
-        x: 62,
-        y: 34,
+        x: 64,
+        y: 19,
         title: { zh: '飘带的方向 · 画师造风的方法', en: 'Ribbons: How a Painter Invents Wind' },
         description: {
           zh: '四身飞天的飘带方向几乎一致，弧度彼此呼应。画师没有画风，他只画了被风吹动的东西——而观众自动补上了风。',
@@ -714,8 +714,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-beauty-1',
-        x: 50,
-        y: 34,
+        x: 40,
+        y: 40,
         title: { zh: '观世音 · 一顶会发光的金冠', en: 'The Gilded Crown' },
         description: {
           zh: '菩萨头冠先以泥浆堆出立体的花瓣与珠串，再贴纯金箔。请试着左右移动视角，注意冠上的珠串如何随光线变化而闪烁。',
@@ -725,8 +725,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-beauty-2',
-        x: 26,
-        y: 76,
+        x: 35,
+        y: 86,
         title: { zh: '都督夫人太原王氏供养像', en: 'The Lady of Taiyuan Wang' },
         description: {
           zh: '领头的是都督夫人，身后依次是女儿与侍女。桂叶眉、点唇、宽袖长裙——这是一份用画笔保存下来的初唐时尚档案。',
@@ -735,8 +735,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-beauty-3',
-        x: 74,
-        y: 78,
+        x: 78,
+        y: 55,
         title: { zh: '千佛环列 · 一片青绿色块', en: 'The Thousand Buddhas' },
         description: {
           zh: '说法图四周是排列整齐的千佛，一格一格如织物经纬。石青与石绿交替出现，形成很有节奏感的色块矩阵。',
@@ -781,7 +781,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-pipa-1',
         x: 50,
-        y: 48,
+        y: 66,
         title: { zh: '反弹琵琶 · 三道弯', en: 'The Triple Curve' },
         description: {
           zh: '舞伎的身体被拧成三道弯：头、腰、腿各向不同方向。一足蹬地、一足踢起，重心在将倒未倒之间——这是整幅画最紧张也最优美的地方。',
@@ -791,8 +791,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-pipa-2',
-        x: 22,
-        y: 52,
+        x: 20,
+        y: 68,
         title: { zh: '乐队 · 一支完整的唐代乐团', en: 'A Complete Tang Orchestra' },
         description: {
           zh: '左侧乐伎演奏排箫、笙、阮等，右侧有鼓与拍板。十余种乐器各有其位，持奏姿势精确，是研究唐代音乐最直接的图像材料。',
@@ -836,8 +836,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-library-1',
-        x: 32,
-        y: 56,
+        x: 28,
+        y: 55,
         title: { zh: '近侍女 · 执杖持巾', en: 'The Attendant with Staff and Towel' },
         description: {
           zh: '西侧树下的侍女手执杖与巾，树间挂着布囊。这些物件都是真实的生活用品，晚唐画师把"侍奉"画成了一系列具体的动作与器物。',
@@ -847,8 +847,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-library-2',
-        x: 68,
-        y: 58,
+        x: 72,
+        y: 55,
         title: { zh: '比丘尼 · 手持纨扇', en: 'The Nun with a Round Fan' },
         description: {
           zh: '东侧树下的比丘尼手持纨扇，树间挂着一只水壶。整幅壁画的情感并不外露，而是靠这些细小的物件与安静的站姿传达。',
@@ -892,8 +892,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-vk-1',
-        x: 62,
-        y: 42,
+        x: 78,
+        y: 58,
         title: { zh: '帝王问疾图 · 天可汗的仪仗', en: 'The Emperor\'s Procession' },
         description: {
           zh: '帝王戴冕旒、服大裘，随行群臣按品级排列，各国王子深目高鼻。这是研究唐代舆服制度最完整的图像之一。',
@@ -902,8 +902,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-vk-2',
-        x: 30,
-        y: 44,
+        x: 20,
+        y: 35,
         title: { zh: '维摩诘 · 辩才无碍的居士', en: 'Vimalakīrti the Layman' },
         description: {
           zh: '维摩诘凭几而坐，神情从容，衣带飘举。画师把这位"辩才第一"的居士画得比任何菩萨都更像一个真实的人。',
@@ -947,8 +947,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-wt-1',
-        x: 42,
-        y: 34,
+        x: 40,
+        y: 30,
         title: { zh: '大清凉之寺 · 山中的都城', en: 'The Great Qingliang Monastery' },
         description: {
           zh: '画面中的寺院殿堂层层，中轴线上高阁矗立。五代画师用正立面的建筑画法，把一座寺院画得像一座微缩的都城。',
@@ -957,8 +957,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-wt-2',
-        x: 66,
-        y: 58,
+        x: 60,
+        y: 66,
         title: { zh: '朝圣之路 · 络绎于途的旅人', en: 'The Road of Pilgrims' },
         description: {
           zh: '山路上有挑担的行脚僧、骑马的官员、驼着货物的商队。山路把人引向画外——也引向真正的五台山。',
@@ -967,8 +967,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-wt-3',
-        x: 22,
-        y: 50,
+        x: 28,
+        y: 52,
         title: { zh: '榜题 · 地名织成的地图', en: 'Inscriptions: A Map of Names' },
         description: {
           zh: '山间密布榜题，写着城郭、寺院与关口之名。正是这些文字，让这幅山水变成了一幅真正可以导航的地图。',
@@ -1013,7 +1013,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-am-1',
         x: 50,
-        y: 30,
+        y: 42,
         title: { zh: '净土楼阁 · 与山同高', en: 'Paradise Pavilions' },
         description: {
           zh: '净土世界的楼阁台榭层层叠起，与周围的青绿山峦共用一条地平线。天上与人间，在这里只隔一池水。',
@@ -1022,7 +1022,7 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-am-2',
-        x: 24,
+        x: 74,
         y: 56,
         title: { zh: '十六观 · 在山间观想', en: 'The Sixteen Contemplations' },
         description: {
@@ -1032,8 +1032,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-am-3',
-        x: 74,
-        y: 62,
+        x: 26,
+        y: 66,
         title: { zh: '未生怨 · 因果的山水', en: 'The Unborn Resentment' },
         description: {
           zh: '阿阇世王子囚禁父王的故事画在山脚的殿宇之间。同一面墙上，因果与救赎被山水串成了一条路。',
@@ -1077,8 +1077,8 @@ export const MURALS: Mural[] = [
     hotspots: [
       {
         id: 'hs-zq-1',
-        x: 40,
-        y: 44,
+        x: 20,
+        y: 50,
         title: { zh: '汉武帝拜金人', en: 'Emperor Wu Worships the Golden Statue' },
         description: {
           zh: '甘泉宫内，武帝率群臣礼拜一尊金人。唐人相信，这是佛像进入中国的起点。',
@@ -1087,8 +1087,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-zq-2',
-        x: 66,
-        y: 50,
+        x: 45,
+        y: 52,
         title: { zh: '张骞拜别 · 凿空西域', en: 'Zhang Qian Takes Leave' },
         description: {
           zh: '张骞持节跪别武帝，身后马匹与随从整装待发。画师把一位使臣的远行，画成了佛法的朝圣。',
@@ -1097,8 +1097,8 @@ export const MURALS: Mural[] = [
       },
       {
         id: 'hs-zq-3',
-        x: 22,
-        y: 58,
+        x: 75,
+        y: 50,
         title: { zh: '山水之间的史迹', en: 'History in Landscape' },
         description: {
           zh: '其余各景是石佛浮江、金像出渚等江南感应故事。山峦把一桩桩"史迹"隔成连续的格子。',
@@ -1143,7 +1143,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-sh-1',
         x: 50,
-        y: 26,
+        y: 28,
         title: { zh: '十一面 · 3·7·1', en: 'Eleven Faces, Rows of 3-7-1' },
         description: {
           zh: '十一张脸自下而上按3、7、1排列，最上是佛面。每一张脸的眉眼都用极淡的细线勾出。',
@@ -1198,7 +1198,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-la-1',
         x: 50,
-        y: 46,
+        y: 50,
         title: { zh: '五色法轮花心', en: 'The Dharma-Wheel Medallion' },
         description: {
           zh: '井心的大团花花心呈五色法轮状，花瓣顺着同一方向旋转。青、绿、朱、黄、白五色在此交汇。',
@@ -1208,7 +1208,7 @@ export const MURALS: Mural[] = [
       {
         id: 'hs-la-2',
         x: 50,
-        y: 22,
+        y: 20,
         title: { zh: '持花飞天 · 蓝天上飞行', en: 'Apsaras in a Blue Sky' },
         description: {
           zh: '四身飞天手持花朵同向飞行，蓝云绕身。衣带与云的流向一致，给静止的窟顶装上了旋转。',
