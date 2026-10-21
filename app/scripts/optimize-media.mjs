@@ -10,14 +10,14 @@ const PUB = '../media';
 const files = fs.readdirSync(PUB).filter((f) => f.endsWith('.webp') && !f.startsWith('thumb-'));
 
 const RULES = [
-  [/^mural-/, { width: 2400, q: 76 }],
-  [/^detail-/, { width: 1600, q: 78 }],
-  [/^wall-/, { width: 1400, q: 74 }],
-  [/^ceiling-/, { width: 1280, q: 76 }],
+  [/^mural-/, { width: 2200, q: 74 }],
+  [/^detail-/, { width: 1500, q: 76 }],
+  [/^wall-/, { width: 1250, q: 72 }],
+  [/^ceiling-/, { width: 1100, q: 74 }],
   [/^wash-/, { width: 1500, q: 82 }],
   [/^easy-/, { width: 1400, q: 84 }],
   [/^encyc-/, { width: 1000, q: 78 }],
-  [/^hero-mural-bg$/, { width: 1400, q: 74 }],
+  [/^hero-mural-bg$/, { width: 1200, q: 72 }],
   [/^cave-floor$/, { width: 1600, q: 80 }],
 ];
 

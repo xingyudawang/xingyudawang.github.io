@@ -101,7 +101,8 @@ export const CavePanorama: React.FC<Props> = ({
     };
 
     // textures may already be cached; fall back to "ready" shortly anyway
-    const readyTimer = setTimeout(() => setReady(true), 2600);
+    // the first wall preview arrives within ~1s; stop waiting for the full scans
+    const readyTimer = setTimeout(() => setReady(true), 1000);
 
     return () => {
       clearTimeout(readyTimer);

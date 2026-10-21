@@ -121,27 +121,27 @@ export class CaveEngine {
    * instant it arrives (a few dozen KB), then swap in the full scan when it
    * finishes. The cave is readable immediately and sharpens in place.
    */
+  private configure(tex: THREE.Texture) {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.generateMipmaps = true;
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
+    this.disposables.push(tex);
+  }
+
   private loadTextureInto(
     mat: THREE.MeshBasicMaterial,
     url: string,
     thumbUrl?: string
   ): THREE.Texture {
-    const configure = (tex: THREE.Texture) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.generateMipmaps = true;
-      tex.minFilter = THREE.LinearMipmapLinearFilter;
-      tex.magFilter = THREE.LinearFilter;
-      tex.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
-      this.disposables.push(tex);
-    };
-
     let fullArrived = false;
     const fullTex = this.textureLoader.load(url, (t) => {
       fullArrived = true;
       mat.map = t;
       mat.needsUpdate = true;
     });
-    configure(fullTex);
+    this.configure(fullTex);
 
     if (thumbUrl) {
       const thumbTex = this.textureLoader.load(thumbUrl, (t) => {
@@ -150,10 +150,39 @@ export class CaveEngine {
           mat.needsUpdate = true;
         }
       });
-      configure(thumbTex);
+      this.configure(thumbTex);
     }
 
     return fullTex;
+  }
+
+  /**
+   * Walls are loaded by view priority: every wall gets its 640px preview up
+   * front, but the full-resolution scan is only requested once the camera turns
+   * within ~130° of that wall. The first paint costs four thumbnails (~120 KB)
+   * instead of four full scans (~1.2 MB), and the wall you are actually looking
+   * at sharpens first.
+   */
+  private wallDefs: Array<{
+    mat: THREE.MeshBasicMaterial;
+    url: string;
+    yaw: number;
+    loaded: boolean;
+  }> = [];
+
+  private tickProgressiveWalls() {
+    for (const w of this.wallDefs) {
+      if (w.loaded) continue;
+      let d = Math.abs(((this.yaw - w.yaw + 540) % 360) - 180);
+      if (d < 130) {
+        w.loaded = true;
+        const tex = this.textureLoader.load(w.url, (t) => {
+          w.mat.map = t;
+          w.mat.needsUpdate = true;
+        });
+        this.configure(tex);
+      }
+    }
   }
 
   /**
@@ -187,15 +216,20 @@ export class CaveEngine {
     uv.needsUpdate = true;
   }
 
-  /** Apply deferred UV fitting once every wall texture has real dimensions. */
+  /** Apply deferred UV fitting once a wall texture has real dimensions. */
   private applyPendingUV() {
+    const stillPending: typeof this.pendingPanels = [];
     for (const panel of this.pendingPanels) {
       const image = panel.texture.image as HTMLImageElement | undefined;
-      const sourceAspect =
-        image && image.width && image.height ? image.width / image.height : 16 / 9;
+      if (!image || !image.width || !image.height) {
+        // preview hasn't arrived yet (or failed): try again on the next batch
+        stillPending.push(panel);
+        continue;
+      }
+      const sourceAspect = image.width / image.height;
       this.fitPanelUV(panel.geo, sourceAspect, panel.surfaceAspect);
     }
-    this.pendingPanels = [];
+    this.pendingPanels = stillPending;
   }
 
   private build(sceneData: CaveScene) {
@@ -215,6 +249,7 @@ export class CaveEngine {
     const SEG = 40;
     const arcLength = (2 * Math.PI * radius) / 4;
     const surfaceAspect = arcLength / height;
+    this.wallDefs = [];
 
     for (let i = 0; i < 4; i++) {
       const yawCenter = i * 90;
@@ -231,10 +266,18 @@ export class CaveEngine {
         toneMapped: false,
       });
       boostColor(mat);
-      const fullTex = this.loadTextureInto(mat, sceneData.walls[i], thumb(sceneData.walls[i]));
+
+      // preview now; the full scan loads when the camera turns this way
+      const thumbTex = this.textureLoader.load(thumb(sceneData.walls[i]), (t) => {
+        mat.map = t;
+        mat.needsUpdate = true;
+      });
+      this.configure(thumbTex);
+      this.wallDefs.push({ mat, url: sceneData.walls[i], yaw: yawCenter, loaded: false });
 
       const mesh = new THREE.Mesh(geo, mat);
-      this.pendingPanels.push({ geo, surfaceAspect, texture: fullTex });
+      // thumb and full share the same aspect, so UVs can be fitted from the thumb
+      this.pendingPanels.push({ geo, surfaceAspect, texture: thumbTex });
       this.root.add(mesh);
       this.disposables.push(geo, mat);
     }
@@ -598,6 +641,7 @@ export class CaveEngine {
     }
 
     this.updateDust(dt);
+    this.tickProgressiveWalls();
     this.renderer.render(this.scene, this.camera);
     this.projectSpots();
   };

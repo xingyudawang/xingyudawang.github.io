@@ -72,14 +72,14 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
       <section className="relative h-[62svh] min-h-[380px] w-full overflow-hidden">
         {/* instant blurred preview, then the full hero fades in */}
         <img
-          src={thumb(media('mural-cave-320.webp'))}
+          src={thumb(media('hero-mural-bg.webp'))}
           onError={(e) => (e.currentTarget.style.display = 'none')}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full scale-105 object-cover blur-md"
         />
         <img
-          src={media('mural-cave-320.webp')}
+          src={media('hero-mural-bg.webp')}
           alt="莫高窟第320窟 散花飞天"
           onLoad={(e) => (e.currentTarget.style.opacity = '1')}
           className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700"
