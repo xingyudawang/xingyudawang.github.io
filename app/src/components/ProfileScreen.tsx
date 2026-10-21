@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Brush, Download, Image as ImageIcon, Languages, Palette, Sun, Trash2, X } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Brush, Download, Image as ImageIcon, Languages, Palette, Sun, Trash2, Volume2, X } from 'lucide-react';
 import { MURALS } from '../data/dunhuangData';
 import { loc } from '../data/caveScenes';
 import { media, thumb } from '../lib/media';
+import { narration } from '../lib/narration';
 import { useApp, type Language, type ThemeMode } from '../context/AppContext';
 import { confirmFeedback, tapFeedback } from '../lib/haptics';
 
@@ -27,6 +28,21 @@ const THEMES: { code: ThemeMode; label: string; icon: React.ReactNode }[] = [
 export const ProfileScreen: React.FC<Props> = ({ onOpenMural, onOpenTab }) => {
   const { language, setLanguage, theme, setTheme, user, removeArtwork, isFavorite } = useApp();
   const [viewing, setViewing] = useState<string | null>(null);
+
+  // narration voice settings
+  const [voices, setVoices] = useState(() => narration.listVoices());
+  const [voiceValue, setVoiceValue] = useState(() => narration.getPreferredVoice() ?? '__auto');
+  const [rate, setRate] = useState(() => narration.getRate());
+
+  useEffect(() => narration.onVoicesChanged(() => setVoices(narration.listVoices())), []);
+
+  const zhVoices = useMemo(
+    () =>
+      voices
+        .filter((v) => v.lang.replace('_', '-').toLowerCase().startsWith('zh'))
+        .sort((a, b) => Number(a.local) - Number(b.local)),
+    [voices]
+  );
 
   const favorites = MURALS.filter((m) => isFavorite(m.id));
 
@@ -217,6 +233,70 @@ export const ProfileScreen: React.FC<Props> = ({ onOpenMural, onOpenTab }) => {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* 讲解声音：默认自动选最自然的音色，也可以手动挑选与调速 */}
+        <div className="mt-2.5 rounded-xl border border-ink-300 bg-ink-700/60 p-3">
+          <div className="flex items-center gap-1.5 text-[11px] text-sand-400">
+            <Volume2 className="h-3.5 w-3.5" />
+            讲解声音 · 九色鹿
+          </div>
+
+          <label className="mt-2 block text-[10px] text-sand-500">
+            音色 {voices.length > 0 ? `（共 ${zhVoices.length} 个中文音色，自动已选最自然的一个）` : '（正在读取系统音色…）'}
+          </label>
+          <select
+            value={voiceValue}
+            onChange={(e) => {
+              const v = e.target.value;
+              narration.setPreferredVoice(v === '__auto' ? null : v);
+              setVoiceValue(v);
+              tapFeedback();
+            }}
+            className="mt-1.5 w-full appearance-none rounded-lg border border-ink-300 bg-ink-600 px-2.5 py-2 text-[12px] text-sand-100"
+          >
+            <option value="__auto">自动（推荐最自然的音色）</option>
+            {zhVoices.map((v) => (
+              <option key={v.name} value={v.name}>
+                {v.name}
+                {v.local ? '' : ' · 在线'}
+              </option>
+            ))}
+          </select>
+
+          <div className="mt-3 flex items-center gap-2">
+            <span className="shrink-0 text-[10px] text-sand-500">语速</span>
+            <input
+              type="range"
+              min={0.75}
+              max={1.25}
+              step={0.05}
+              value={rate}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setRate(v);
+                narration.setRate(v);
+              }}
+              className="h-1.5 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-ink-400 accent-gold-400"
+            />
+            <span className="w-10 shrink-0 text-right font-mono text-[10px] text-gold-300">
+              {rate.toFixed(2)}×
+            </span>
+          </div>
+
+          <button
+            onClick={() => {
+              narration.preview(
+                '您好，我是九色鹿，敦煌的数字讲解员。请听，这就是我的声音。',
+                'zh'
+              );
+              confirmFeedback();
+            }}
+            className="mt-2.5 flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-gold-400/35 text-[11px] text-gold-200 active:scale-[0.99]"
+          >
+            <Volume2 className="h-3.5 w-3.5" />
+            试听当前音色
+          </button>
         </div>
       </section>
 

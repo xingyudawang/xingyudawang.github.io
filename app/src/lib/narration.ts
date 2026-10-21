@@ -149,6 +149,13 @@ class NarrationManager {
     );
     if (!candidates.length) return undefined;
 
+    // an explicit user choice always wins
+    const preferred = this.getPreferredVoice();
+    if (preferred) {
+      const hit = candidates.find((v) => v.name === preferred);
+      if (hit) return hit;
+    }
+
     const score = (v: SpeechSynthesisVoice) => {
       let s = 0;
       const n = v.name.toLowerCase();
@@ -172,6 +179,64 @@ class NarrationManager {
     return this.voices.some((v) =>
       v.lang.replace('_', '-').toLowerCase().startsWith(prefix.slice(0, 2))
     );
+  }
+
+  /* ------------------------------------------------------------------
+     Voice preferences (persisted, so the naturalest available voice is
+     used by default and can be overridden in the settings)
+     ------------------------------------------------------------------ */
+
+  listVoices(): Array<{ name: string; lang: string; local: boolean }> {
+    this.loadVoices();
+    return this.voices.map((v) => ({ name: v.name, lang: v.lang, local: v.localService }));
+  }
+
+  /** Fire the callback whenever the browser's voice list changes. */
+  onVoicesChanged(fn: () => void): () => void {
+    this.loadVoices();
+    const handler = () => fn();
+    window.speechSynthesis.addEventListener?.('voiceschanged', handler);
+    return () => window.speechSynthesis.removeEventListener?.('voiceschanged', handler);
+  }
+
+  getPreferredVoice(): string | null {
+    try {
+      return localStorage.getItem('dh_voice');
+    } catch {
+      return null;
+    }
+  }
+
+  setPreferredVoice(name: string | null) {
+    try {
+      if (name) localStorage.setItem('dh_voice', name);
+      else localStorage.removeItem('dh_voice');
+    } catch {
+      /* noop */
+    }
+  }
+
+  getRate(): number {
+    try {
+      const v = Number(localStorage.getItem('dh_rate'));
+      if (v >= 0.7 && v <= 1.3) return v;
+    } catch {
+      /* noop */
+    }
+    return 1;
+  }
+
+  setRate(v: number) {
+    try {
+      localStorage.setItem('dh_rate', String(v));
+    } catch {
+      /* noop */
+    }
+  }
+
+  /** Speak a short sample so users can audition a voice / pace in settings. */
+  preview(text: string, lang: 'zh' | 'en' | 'ja' | 'fr' = 'zh') {
+    this.speak('voice-preview', '', text, lang);
   }
 
   /**
@@ -227,8 +292,10 @@ class NarrationManager {
     const voice = this.pickVoice(this.lang.slice(0, 2));
     if (voice) utter.voice = voice;
     // natural, measured museum-guide pacing: slightly slower for Chinese,
-    // neutral pitch, no artifical exaggeration
-    utter.rate = this.lang.startsWith('zh') ? 0.9 : this.lang.startsWith('ja') ? 0.95 : 0.97;
+    // neutral pitch, no artifical exaggeration; the user's rate factor
+    // (settings → 讲解声音) scales it
+    const baseRate = this.lang.startsWith('zh') ? 0.9 : this.lang.startsWith('ja') ? 0.95 : 0.97;
+    utter.rate = Math.min(1.6, Math.max(0.5, baseRate * this.getRate()));
     utter.pitch = 1.0;
     utter.volume = 1;
 
