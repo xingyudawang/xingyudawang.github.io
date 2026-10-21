@@ -84,6 +84,7 @@ pnpm typecheck
 | `verify.mjs` | 无头 Chrome 逐路由检查控制台报错与请求失败 |
 | `shot.mjs` | 截图并统计亮度 / 方差 / 暖色占比，避免 WebGL 黑屏蒙混过关 |
 | `touch-test.mjs` | 用真实触摸事件测试拖拽旋转、俯仰、双指缩放、绘制、撤销、填色 |
+| `blender/floor.py` | Blender 无头脚本：烘焙洞窟沙地质感地面（`media/cave-floor.webp`） |
 
 最近的实测结果：
 
