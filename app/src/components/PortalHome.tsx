@@ -46,6 +46,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
         {/* instant blurred preview, then the full hero fades in */}
         <img
           src={thumb(media('mural-cave-320.webp'))}
+          onError={(e) => (e.currentTarget.style.display = 'none')}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full scale-105 object-cover blur-md"
@@ -186,6 +187,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
               <div className="relative aspect-[16/10] overflow-hidden">
                 <img
                   src={thumb(cave.coverImage)}
+                  onError={(e) => (e.currentTarget.src = cave.coverImage)}
                   alt={loc(cave.name, language)}
                   loading="lazy"
                   decoding="async"
@@ -242,6 +244,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
             >
               <img
                 src={thumb(m.imageUrl)}
+                onError={(e) => (e.currentTarget.src = m.imageUrl)}
                 alt={loc(m.title, language)}
                 loading="lazy"
                 decoding="async"
@@ -270,6 +273,7 @@ export const PortalHome: React.FC<Props> = ({ onOpenCave, onOpenMural, onOpenTab
         >
           <img
             src={thumb(media('hero-mural-bg.webp'))}
+            onError={(e) => (e.currentTarget.src = media('hero-mural-bg.webp'))}
             alt=""
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover opacity-70"

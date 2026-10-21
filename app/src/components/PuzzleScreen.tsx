@@ -74,6 +74,15 @@ const PuzzleBoard: React.FC<{ language: Lang }> = ({ language }) => {
   const mural = MURALS[muralIndex];
   const solved = useMemo(() => tiles.every((t, i) => t === i), [tiles]);
 
+  // board texture: use the 640px thumb when it exists, fall back to the full scan
+  const [boardSrc, setBoardSrc] = useState(() => thumb(mural.imageUrl));
+  useEffect(() => {
+    setBoardSrc(thumb(mural.imageUrl));
+    const probe = new Image();
+    probe.onerror = () => setBoardSrc(mural.imageUrl);
+    probe.src = thumb(mural.imageUrl);
+  }, [mural.imageUrl]);
+
   // the board matches each painting's own proportions, parsed from its scan size
   const muralAspect = useMemo(() => {
     const m = mural.scanSize?.match(/(\d+)\s*[×x]\s*(\d+)/);
@@ -176,7 +185,7 @@ const PuzzleBoard: React.FC<{ language: Lang }> = ({ language }) => {
                   selected === idx ? 'z-10 scale-[0.94] ring-2 ring-gold-200' : ''
                 } ${solved ? '' : 'active:scale-95'}`}
                 style={{
-                  backgroundImage: `url(${thumb(mural.imageUrl)})`,
+                  backgroundImage: `url(${boardSrc})`,
                   backgroundSize: `${GRID * 100}% ${GRID * 100}%`,
                   backgroundPosition: `${(col / (GRID - 1)) * 100}% ${(row / (GRID - 1)) * 100}%`,
                 }}

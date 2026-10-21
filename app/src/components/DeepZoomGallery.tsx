@@ -252,6 +252,7 @@ export const DeepZoomGallery: React.FC<Props> = ({ initialMuralId, onBack, onSel
               src={thumb(imageUrl)}
               alt=""
               aria-hidden="true"
+              onError={(e) => (e.currentTarget.style.display = 'none')}
               draggable={false}
               className="block max-h-[calc(100svh-11rem)] max-w-[100vw] scale-105 select-none object-contain blur-md"
             />
