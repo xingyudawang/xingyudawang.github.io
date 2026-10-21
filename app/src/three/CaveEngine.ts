@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { media } from '../lib/media';
 import type { CaveScene } from '../data/caveScenes';
 
 export interface SpotProjection {
@@ -216,16 +217,23 @@ export class CaveEngine {
     this.disposables.push(ceilGeo, ceilMat);
 
     // ---- Sand floor --------------------------------------------------
+    // Baked with Blender (scripts/blender/floor.py): a displaced fractal-noise
+    // plane lit by a raking sun, so every cave gets a genuinely textured,
+    // shadowed sand floor instead of a flat gradient.
     const floorGeo = new THREE.CircleGeometry(radius, 72);
-    const floorMat = new THREE.MeshBasicMaterial({
-      map: this.makeFloorTexture(),
-      side: THREE.DoubleSide,
-    });
+    const floorMat = new THREE.MeshBasicMaterial({ color: 0x33251a });
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -halfH;
     this.root.add(floor);
     this.disposables.push(floorGeo, floorMat);
+
+    const floorTex = this.loadTexture(media('cave-floor.webp'));
+    floorTex.wrapS = THREE.RepeatWrapping;
+    floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(2, 2);
+    floorMat.map = floorTex;
+    floorMat.needsUpdate = true;
 
     // ---- Optional central pillar (中心塔柱) ---------------------------
     if (sceneData.pillar) {
@@ -301,32 +309,6 @@ export class CaveEngine {
       id: s.id,
       pos: this.anchorFor(sceneData, s.yaw, s.pitch),
     }));
-  }
-
-  private makeFloorTexture(): THREE.Texture {
-    const size = 512;
-    const c = document.createElement('canvas');
-    c.width = size;
-    c.height = size;
-    const ctx = c.getContext('2d')!;
-    const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.05, size / 2, size / 2, size * 0.62);
-    g.addColorStop(0, '#3a2a1d');
-    g.addColorStop(0.55, '#2a1e15');
-    g.addColorStop(1, '#150f0a');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, size, size);
-    // sand grain
-    for (let i = 0; i < 9000; i++) {
-      const x = Math.random() * size;
-      const y = Math.random() * size;
-      const a = Math.random() * 0.09;
-      ctx.fillStyle = Math.random() > 0.5 ? `rgba(200,170,120,${a})` : `rgba(0,0,0,${a})`;
-      ctx.fillRect(x, y, 1.6, 1.6);
-    }
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    this.disposables.push(tex);
-    return tex;
   }
 
   /** Swap to a different cave in-place (disposes only the room geometry). */
