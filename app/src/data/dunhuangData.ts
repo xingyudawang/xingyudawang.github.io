@@ -63,6 +63,8 @@ export interface EncyclopediaEntry {
   summary: Record<string, string>;
   content: Record<string, string[]>;
   image: string;
+  /** high-resolution source opened in the zoomable lightbox */
+  zoomImage?: string;
   attributes?: Record<string, string>;
 }
 
@@ -1253,6 +1255,7 @@ export const ENCYCLOPEDIA_ENTRIES: EncyclopediaEntry[] = [
       ],
     },
     image: media('encyc-lapis.webp'),
+    zoomImage: media('wall-cave-420-n.webp'),
     attributes: {
       化学成分: 'Na₈(AlSiO₄)₆(SO₄,S,Cl)₂',
       古代产地: '阿富汗巴达赫尚 (Badakhshan)',
@@ -1282,6 +1285,7 @@ export const ENCYCLOPEDIA_ENTRIES: EncyclopediaEntry[] = [
       ],
     },
     image: media('encyc-cinnabar.webp'),
+    zoomImage: media('wall-cave-320-s.webp'),
     attributes: {
       变色原因: '铅丹 → 二氧化铅 (PbO₂)',
       稳定颜料: '朱砂 HgS',
@@ -1311,6 +1315,7 @@ export const ENCYCLOPEDIA_ENTRIES: EncyclopediaEntry[] = [
       ],
     },
     image: media('encyc-pipa.webp'),
+    zoomImage: media('mural-cave-112.webp'),
     attributes: {
       形制: '四弦 · 梨形音箱 · 曲项',
       代表图像: '第112窟 南壁 反弹琵琶',
@@ -1340,6 +1345,7 @@ export const ENCYCLOPEDIA_ENTRIES: EncyclopediaEntry[] = [
       ],
     },
     image: media('encyc-guardian.webp'),
+    zoomImage: media('wall-cave-285-e.webp'),
     attributes: {
       代表形象: '天王 / 力士 / 药叉',
       常见位置: '壁面下层、龛外两侧、门侧',
@@ -1374,6 +1380,269 @@ export const ENCYCLOPEDIA_ENTRIES: EncyclopediaEntry[] = [
       常见井心: '莲花 / 三兔共耳 / 云头牡丹',
       代表洞窟: '第420窟（三兔）、第320窟（牡丹）、第285窟（斗四莲花）',
       观看方式: '仰视——为抬头而设计',
+    },
+    zoomImage: media('ceiling-cave-420.webp'),
+  },
+  {
+    id: 'pigment-malachite',
+    category: 'pigment',
+    title: { zh: '石绿 · 孔雀石的千年绿', en: 'Malachite: The Green of a Thousand Years' },
+    subtitle: { zh: '青绿山水的一半，来自这种铜矿', en: 'Half of blue-green landscape comes from this copper ore' },
+    summary: {
+      zh: '石绿来自孔雀石，与石青并称"青绿"。它们价格昂贵、耐光性强，是壁画与青绿山水画里的主色。有趣的是，壁画上许多发暗发黑的部分，正是石绿在漫长岁月里的氧化。',
+      en: 'Malachite green and azurite blue are the "blue-green" pair, costly and light-fast, the key colours of both wall painting and blue-green landscape. Curiously, many darkened patches on the murals are malachite itself, oxidised over centuries.',
+    },
+    content: {
+      zh: [
+        '来源与特性：石绿取自孔雀石（碱式碳酸铜），与石青（蓝铜矿）常常共生，同产于铜矿之中。中国铜矿丰富，石绿石青因此比舶来的青金石易得，但提纯同样需要反复水飞、分选出深浅不一的颗粒。',
+        '画法：画师把石绿分成头绿、二绿、三绿等不同深浅，先以石青打底、再罩石绿，层层积染，表现山峦的受光面与背光面。第217窟北壁的《观无量寿经变》正是这种技法的顶峰。',
+        '岁月的痕迹：石绿在光照与潮湿下会缓慢转化为暗色的氧化铜，因此今天看到的许多"黑脸"与暗块，有一部分其实是当年的绿色。反过来，这也是判断原作年代与保存状况的线索之一。',
+      ],
+      en: [
+        'Source: malachite (basic copper carbonate), often found with azurite in the same copper deposits. Because China is rich in copper ores, green and blue were easier to obtain than imported lapis, yet still required repeated water levigation to separate grades of fineness.',
+        'Technique: painters graded malachite into first, second and third greens, underlaying azurite and overlaying malachite layer by layer to model lit and shadowed mountain flanks. The Contemplation Sutra illustration on the north wall of Cave 217 is the summit of the technique.',
+        'Traces of time: under light and moisture, malachite slowly converts to dark copper oxides. Many of the "black faces" and dark patches seen today were once green — which also makes them clues to dating and conservation.',
+      ],
+    },
+    image: media('encyc2-malachite.webp'),
+    zoomImage: media('mural-cave-217.webp'),
+    attributes: {
+      化学成分: '碱式碳酸铜 Cu₂(OH)₂CO₃',
+      分级: '头绿 / 二绿 / 三绿',
+      代表洞窟: '第217窟（观无量寿经变）',
+      特殊之处: '氧化后变暗，是岁月的指纹',
+    },
+  },
+  {
+    id: 'pigment-gold',
+    category: 'pigment',
+    title: { zh: '泥金与沥粉贴金 · 墙上的真金', en: 'Gold Leaf: Real Gold on the Wall' },
+    subtitle: { zh: '金色不是颜料，而是一层真的金属', en: 'The gold is not paint but real metal' },
+    summary: {
+      zh: '敦煌壁画里的金色有两种做法：把金箔研磨成极细的粉末调胶使用，叫"泥金"；先用泥浆在墙上堆出立体纹样、干透后贴上金箔，叫"沥粉贴金"。第57窟观音头冠上的珠串，就是后一种。',
+      en: 'Dunhuang gold comes two ways: ground into powder and mixed with glue as "mud gold", or built up in clay relief and covered with leaf as "raised gold". The beads on the Avalokitesvara\'s crown in Cave 57 are the latter — real metal standing proud of the wall.',
+    },
+    content: {
+      zh: [
+        '泥金：把金箔放入胶水中反复研磨，得到金泥，再用细笔勾勒衣纹、璎珞与佛光。泥金线条纤细流畅，在烛光下会随着观看角度流动闪光。',
+        '沥粉贴金：先用调了胶的泥浆沿纹样挤出凸起的线条（沥粉），干透后刷胶、贴上捶打得极薄的金箔。因为金箔真实凸起，任何方向的一点光线都会让它闪烁——这是壁画里最"贵重"的工艺。',
+        '价值：黄金的化学性质极其稳定，历经千年几乎不褪色。许多壁画的其他颜色早已暗淡，唯独金线仍在发光，成为今天判断原作华贵程度的最直观依据。',
+      ],
+      en: [
+        'Mud gold: leaf ground in glue into a fine slurry, then used with a fine brush for drapery, necklaces and halos. Its lines glint and flow as the viewing angle changes.',
+        'Raised gold: adhesive clay paste is piped along the design to build relief ridges, left to dry, sized, and covered with wafer-thin hammered gold. Because the metal truly stands proud, the slightest light from any direction makes it flash — the most precious technique in wall painting.',
+        'Value: gold is chemically inert and barely fades in a thousand years. Where every other colour has dimmed, the gold lines still gleam — the most direct evidence of how magnificent the originals were.',
+      ],
+    },
+    image: media('encyc2-gold.webp'),
+    zoomImage: media('mural-cave-57.webp'),
+    attributes: {
+      两种做法: '泥金（金粉调胶） / 沥粉贴金（立体纹样+金箔）',
+      代表洞窟: '第57窟 观音头冠',
+      特性: '千年不褪，随光线闪烁',
+    },
+  },
+  {
+    id: 'figure-apsara',
+    category: 'figure',
+    title: { zh: '飞天 · 没有翅膀的飞行', en: 'Apsaras: Flight Without Wings' },
+    subtitle: { zh: '一条飘带，就是她的翅膀', en: 'Her ribbons are her wings' },
+    summary: {
+      zh: '飞天是敦煌最出名的形象之一：没有翅膀，全靠身体的反转与飘带的走向"飞"。她们散花、奏乐、供养，从北魏的清瘦一路飞到盛唐的丰腴——一部敦煌飞天史，就是一部审美变迁史。',
+      en: 'The apsara is among Dunhuang\'s most famous figures: no wings, flying entirely on the turn of the body and the direction of her scarves. Scattering flowers and playing music, she grows from the slender figures of the Northern Wei to the full forms of the High Tang — a history of changing taste.',
+    },
+    content: {
+      zh: [
+        '飞天并不等于"会飞的神仙"。她源于印度佛教中的乾闼婆与紧那罗（香音神与天乐神），在佛说法时散花奏乐。传入中国后，与汉地的羽人、仙人形象融合，最终定型为我们今天熟悉的模样。',
+        '北魏到西魏的飞天身形清瘦、衣带飞扬，被称为"秀骨清像"；盛唐的飞天则体态丰腴、姿态舒展，飘带更长更密。第320窟南壁上部的四身散花飞天，是盛唐飞天的代表作。',
+        '看飞天的窍门在飘带：方向一致、弧度渐收的长线，制造出风的走向。画师从来没有画过风，他只画了被风吹动的东西——观众自动补上了风。',
+      ],
+      en: [
+        'The apsara is not just a "flying immortal". She descends from the Gandharva and Kinnara of Indian Buddhism — spirits of fragrance and heavenly music who serve at the Buddha\'s assemblies. Merged with Chinese winged immortals, she became the figure we know today.',
+        'From Northern Wei to Western Wei, apsaras were slender with flying garments — the "elegant-boned" style; by the High Tang they grew full-bodied and expansive, with longer, denser scarves. The four scattering apsaras above the south wall of Cave 320 are the classic example.',
+        'The trick to reading an apsara is her ribbons: long lines running one way, arcs tightening together, create the direction of the wind. The painter never painted wind — only what the wind had touched, and the viewer supplies the rest.',
+      ],
+    },
+    image: media('encyc2-apsara.webp'),
+    zoomImage: media('mural-cave-320.webp'),
+    attributes: {
+      原型: '乾闼婆（香音神）与紧那罗（天乐神）',
+      演变: '北魏清瘦 → 盛唐丰腴',
+      代表洞窟: '第320窟、第249窟、第285窟',
+    },
+  },
+  {
+    id: 'figure-deer',
+    category: 'figure',
+    title: { zh: '九色鹿与北魏本生画', en: 'The Nine-Colored Deer and Northern Wei Jātaka' },
+    subtitle: { zh: '一部经，被画成了一条横卷', en: 'A sutra turned into a horizontal scroll' },
+    summary: {
+      zh: '《九色鹿王本生》是敦煌最著名的故事画：横卷式构图自两端向中央推进，把救溺、背信、悬赏、陈情、得报五个情节压进同一幅画面。它开创的"连环画"形式，影响了此后一千年的佛教叙事画。',
+      en: 'The Deer King Jātaka is the most famous narrative painting at Dunhuang: a horizontal scroll advancing from both ends toward the centre, pressing rescue, betrayal, reward, plea and retribution into one image. The comic-strip form it pioneered shaped Buddhist narrative painting for a thousand years.',
+    },
+    content: {
+      zh: [
+        '"本生"是释迦牟尼前生的故事，讲述他作为鹿、鸟、王子的种种前身如何修行。北魏画师把本生故事画成横卷，从两端读向中央，故事的高潮正好落在画面中心——九色鹿与国王的对峙。',
+        '构图上的绝活是"异时同图"：同一画面里，左边还是救人的过去，右边已经是悬赏的将来。画师不画时间，只画空间，让观众自己在两段情节之间完成时间的跳跃。',
+        '九色鹿的形象尤其讲究：白色身躯在赭红底壁上如同发光，鹿角如珊瑚枝杈，四足稳踏浪头。铁线描的轮廓加上西域传来的凹凸晕染，让它成为北魏"秀骨清像"美学的标本。',
+      ],
+      en: [
+        'A jātaka tells of the Buddha\'s previous lives — as a deer, a bird, a prince — and how each practised virtue. Northern Wei painters drew them as horizontal scrolls read from both ends inward, so the climax falls at the exact centre: the deer confronting the king.',
+        'The compositional feat is "simultaneous narration": in one image the left is still the past of the rescue while the right is already the future of the bounty. The painter does not depict time, only space — the viewer makes the leap between episodes.',
+        'The deer itself is drawn with care: its white body glows against the red-ochre ground, antlers branch like coral, four hooves planted on the crest of a wave. Iron-wire contours plus Western-Region shading make it the model of Northern Wei "elegant-boned" aesthetics.',
+      ],
+    },
+    image: media('encyc2-deer.webp'),
+    zoomImage: media('mural-cave-257.webp'),
+    attributes: {
+      题材: '本生故事画（Jātaka）',
+      构图: '异时同图 · 横卷式连环画',
+      代表洞窟: '第257窟 西壁',
+    },
+  },
+  {
+    id: 'figure-zhangqian',
+    category: 'figure',
+    title: { zh: '张骞出使西域 · 敦煌的史迹画', en: 'Zhang Qian: Dunhuang\'s History Painting' },
+    subtitle: { zh: '把凿空西域，画进佛法的来路', en: 'The opening of the west, painted into the dharma\'s route' },
+    summary: {
+      zh: '第323窟北壁的"佛教史迹画"是敦煌独有的题材：第一景汉武帝礼拜金人，第二景张骞持节出使西域。史实上两事相隔两百年，画师却把它们画成同一条因果链——敦煌人在讲述自己的身世。',
+      en: 'The "Buddhist history paintings" on the north wall of Cave 323 are a genre unique to Dunhuang: first, Emperor Wu of Han worships a golden statue; second, Zhang Qian sets out west with his staff. Two events two centuries apart in fact, drawn as one chain of cause and effect — Dunhuang telling the story of its own origins.',
+    },
+    content: {
+      zh: [
+        '史迹画把历史、传说与信仰织进同一幅长卷：金人先至、佛法随之、张骞凿空、敦煌居中。为了给信仰一条来路，画师不惜重写时间线——这是中古时代"以图证史"的独特产物。',
+        '画面以青绿山水分格：山峦把一桩桩史迹隔成连续的格子，人物在山水之间行走、渡河、拜别。榜题写清每一景的内容，几乎就是一部初唐的连环画。',
+        '它同时是一份"国际视野"的证明：汉武帝、匈奴、大夏、张骞的随从……不同族群的服饰与仪仗都被细致刻画，说明唐代画师对丝路诸国并不陌生。',
+      ],
+      en: [
+        'History painting weaves fact, legend and faith into one scroll: the golden image came first, the teaching followed, Zhang Qian opened the west, and Dunhuang stood at the centre. To give faith a route, the painter happily rewrote the timeline — a uniquely medieval way of proving history with images.',
+        'Blue-green landscape divides the episodes into cells: figures walk, cross rivers and take leave between the hills, and cartouches label each scene — almost an early Tang comic strip.',
+        'It is also evidence of a global outlook: the Han emperor, the Xiongnu, Bactria, Zhang Qian\'s retinue — the dress and regalia of different peoples are carefully rendered, showing Tang painters knew the nations of the Silk Road well.',
+      ],
+    },
+    image: media('encyc2-zhangqian.webp'),
+    zoomImage: media('mural-cave-323.webp'),
+    attributes: {
+      题材: '佛教史迹画（敦煌独有）',
+      画面: '汉武帝拜金人 → 张骞出使西域',
+      代表洞窟: '第323窟 北壁',
+    },
+  },
+  {
+    id: 'craft-cave-shape',
+    category: 'craft',
+    title: { zh: '洞窟形制 · 中心塔柱窟与覆斗顶窟', en: 'Cave Forms: Central Pillar and Funnel Ceiling' },
+    subtitle: { zh: '洞窟不是凿出来的房间，而是一套仪式程序', en: 'A cave is not a room but a ritual programme' },
+    summary: {
+      zh: '莫高窟的洞窟主要有两种形制：北魏流行"中心塔柱窟"——信众绕柱右旋礼拜；隋唐流行"覆斗顶窟"——窟顶如倒扣的斗，象征佛顶华盖。形制的选择，其实是在安排一套观看与行走的仪式。',
+      en: 'Mogao caves come in two main forms: the central-pillar cave of the Northern Wei, where worshippers circumambulate a square column; and the inverted-funnel cave of the Sui and Tang, its ceiling like an upturned grain measure, a canopy above the Buddha. Choosing a form is really choreographing a ritual of looking and walking.',
+    },
+    content: {
+      zh: [
+        '中心塔柱窟：窟室中央立方形塔柱，连接窟顶与地面，四面开龛塑像。信众入窟后沿柱右旋绕行，边走边观想，最后才面对西壁的本生故事。空间本身规定了身体的动作——这是可"走"的建筑。',
+        '覆斗顶窟：窟顶四面向中心收拢成方形凹面，形似倒扣的斗，象征佛说法时头顶的宝盖。藻井居于正中，四披画千佛或经变。它把视线引向正上方的莲花，为"仰望"而设计。',
+        '两种形制之外，还有殿堂窟、大像窟、禅窟等。莫高窟的工匠不是简单"挖洞"，而是在砂砾岩里用泥塑与彩绘，把木构建筑、佛教宇宙与仪式动线整体搬进山体。',
+      ],
+      en: [
+        'Central pillar: a square column rises through the room, opening into niches on each face. Worshippers circle it clockwise while contemplating the images, only then facing the jātaka scrolls on the west wall. The space itself prescribes the movement of the body — architecture you walk through.',
+        'Inverted funnel: the ceiling converges inward on a square recess like an upturned measure, a jewelled canopy above the teaching Buddha. The caisson sits at its centre, slopes filled with thousand Buddhas or sutra illustrations — designed to pull the gaze up toward the lotus.',
+        'Beyond these two, there are hall caves, colossal-image caves and meditation cells. The builders were not simply digging holes: in the loose conglomerate they rebuilt timber architecture, Buddhist cosmology and ritual movement in clay and paint.',
+      ],
+    },
+    image: media('encyc2-cave.webp'),
+    zoomImage: media('ceiling-cave-257.webp'),
+    attributes: {
+      北魏主流: '中心塔柱窟（绕塔右旋）',
+      隋唐主流: '覆斗顶窟（象征华盖）',
+      其他: '殿堂窟 / 大像窟 / 禅窟',
+    },
+  },
+  {
+    id: 'craft-technique',
+    category: 'craft',
+    title: { zh: '壁画制作 · 从崖壁到佛国', en: 'Making a Mural: From Cliff to Paradise' },
+    subtitle: { zh: '一层地仗、一张粉本、一整套矿物色', en: 'A plaster ground, a cartoon, a full mineral palette' },
+    summary: {
+      zh: '莫高窟开凿在松散的砂砾岩上，无法直接作画。工匠先凿出窟形，再在岩壁上做出草泥层、麻刀层、白粉层三层"地仗"，然后起稿、勾线、敷色、贴金。一幅壁画的完成，是十几道工序的接力。',
+      en: 'The Mogao cliff is loose conglomerate that cannot be painted directly. Artisans first cut the cave, then built a three-layer plaster ground of straw-mud, hemp-mud and white slip, before outlining, inking, colouring and gilding. A mural is the relay of a dozen crafts.',
+    },
+    content: {
+      zh: [
+        '地仗：先在凿毛的岩壁上抹一层掺草筋的粗泥，再抹一层掺麻刀的细泥，最后罩一层薄薄的白粉。白粉层既是底色，也是吸水的"画纸"。今天壁画剥落处露出的稻草纤维，就是第一层地仗。',
+        '起稿与勾线：画师先用淡赭色起稿定位，再用墨线或赭红线定形，最后按部位着色。敦煌的线描自成谱系——铁线描、兰叶描、游丝描各有其时代与用途。',
+        '敷色与贴金：先平涂大色块，再层层晕染过渡，最后以泥金或沥粉贴金提神。矿物质颜料叠压产生的厚度，让壁画在侧光下呈现轻微的浮雕感。',
+      ],
+      en: [
+        'The ground: a rough straw-mixed mud coat, a finer hemp-fibre coat, and a thin white slip on top. The slip is both the base tone and the absorbent "paper". The straw fibres visible where paint has flaked are the first coat.',
+        'Outlining: painters laid out the design in pale ochre, fixed the forms in ink or red-ochre lines, then coloured region by region. Dunhuang line drawing is its own genealogy — iron-wire, orchid-leaf and gossamer strokes each belong to a period and a purpose.',
+        'Colour and gilding: large fields were filled flat, then modelled in washes, then enlivened with mud gold or raised gold leaf. The physical thickness of layered mineral pigments gives the walls a faint relief in side light.',
+      ],
+    },
+    image: media('encyc2-technique.webp'),
+    zoomImage: media('detail-cave-249.webp'),
+    attributes: {
+      地仗三层: '草泥层 / 麻刀层 / 白粉层',
+      线描谱系: '铁线描 / 兰叶描 / 游丝描',
+      点睛之笔: '泥金与沥粉贴金',
+    },
+  },
+  {
+    id: 'preservation-digital',
+    category: 'preservation',
+    title: { zh: '数字敦煌 · 让石窟再活一千年', en: 'Digital Dunhuang: A Second Millennium' },
+    subtitle: { zh: '亿级像素的扫描，正在接替风沙与时间', en: 'Gigapixel scanning, taking over from sand and time' },
+    summary: {
+      zh: '壁画无法永生，但可以被无限接近地"备份"。敦煌研究院以亿级像素扫描每一面墙，建立可放大的数字档案——本站的全部壁画，正是取自这套公开档案。数字化不是替代原作，而是给原作上第二道保险。',
+      en: 'Murals cannot live forever, but they can be backed up with unlimited fidelity. The Dunhuang Academy scans every wall at gigapixel resolution into a zoomable digital archive — the very archive this site\'s imagery is stitched from. Digitisation does not replace the originals; it insures them.',
+    },
+    content: {
+      zh: [
+        '为什么要数字化：颜料会氧化、地仗会酥碱、游客的呼吸都会加速老化。数字档案把壁画"此刻的样子"凝固下来，即使未来原作继续变化，后人也知道它今天是什么样。',
+        '怎么做：摄影测量与高精度扫描拼接出整面墙的连续影像，单幅可达数亿像素；高光谱与多光谱成像还能记录肉眼不可见的信息，帮助研究者识别每一种颜料。',
+        '本站的做法：我们从数字敦煌的公开 Deep Zoom 档案中取瓦片、拼接、缩放成网页可用的图像——您在本站看到的每一面墙，都是敦煌研究院扫描设备记录下的真实像素。',
+      ],
+      en: [
+        'Why digitise: pigments oxidise, plaster effloresces, even visitors\' breath accelerates ageing. A digital archive freezes the wall "as it is now", so that however the original changes, later generations will know how it looked today.',
+        'How: photogrammetry and high-resolution scanning stitch continuous imagery of an entire wall, some panels reaching hundreds of millions of pixels; hyperspectral imaging records information invisible to the eye, helping researchers identify every pigment.',
+        'How this site works: we take tiles from Digital Dunhuang\'s public Deep Zoom archive, stitch and scale them into web-ready images. Every wall you see here is real pixel data recorded by the Academy\'s scanning equipment.',
+      ],
+    },
+    image: media('encyc2-digital.webp'),
+    zoomImage: media('mural-cave-61.webp'),
+    attributes: {
+      档案来源: '敦煌研究院「数字敦煌」公开档案',
+      单幅精度: '最高 59441 × 24152 px',
+      本站做法: '取瓦片 → 拼接 → WebP',
+    },
+  },
+  {
+    id: 'dynasty-wei',
+    category: 'dynasty',
+    title: { zh: '北魏 · 秀骨清像的年代', en: 'Northern Wei: The Age of Elegant Bones' },
+    subtitle: { zh: '一场由南向北吹来的审美革命', en: 'An aesthetic revolution blown north from the south' },
+    summary: {
+      zh: '北魏晚期的敦煌，人物突然变得清瘦修长、衣带飘举，史称"秀骨清像"。这股风气来自南朝士大夫的审美，经洛阳、凉州传入敦煌——佛教艺术第一次大规模吸收中原趣味，中西画法在此熔铸。',
+      en: 'In late Northern Wei Dunhuang, figures suddenly grew slender and elongated, garments streaming — the "elegant-boned" style. The taste came from southern Chinese literati culture, travelling via Luoyang and Liangzhou to Dunhuang: the first great absorption of Central Plains aesthetics into Buddhist art, and the crucible where east and west met.',
+    },
+    content: {
+      zh: [
+        '特征：身形清瘦、脖颈细长、衣带飘举如风；面容不再是西域式的深目高鼻，而带上了中原士人的清秀与含蓄。色彩仍以土红打底、石青石绿敷彩，但线条的地位大大上升。',
+        '画法：西域传来的"凹凸法"晕染与中原的铁线描并行——用线条确定形体，用晕染制造体积。第257窟的九色鹿、第254窟的白衣佛，都是这一融合的标本。',
+        '意义：秀骨清像标志着敦煌从"西域样式"走向"中国样式"的转折点。此后的西魏、北周，这条融合之路越走越宽，最终在隋唐结出"大唐气象"的果实。',
+      ],
+      en: [
+        'Features: slender bodies, long necks, garments streaming as if in wind; faces no longer deep-eyed and high-nosed in the Western manner, but clear and reserved in the Central Plains style. The palette keeps its red-ochre ground with azurite and malachite, but the line rises in importance.',
+        'Technique: Western "chiaroscuro" modelling and Central Plains iron-wire drawing run side by side — line fixes the form, shading builds the volume. The Nine-Colored Deer of Cave 257 and the White-Robed Buddha of Cave 254 are textbook examples.',
+        'Significance: elegant-boned painting marks Dunhuang\'s turn from a "Western style" toward a "Chinese style". Through the Western Wei and Northern Zhou the fusion widened, and in the Sui and Tang it flowered into the full "Tang manner".',
+      ],
+    },
+    image: media('encyc2-wei.webp'),
+    zoomImage: media('mural-cave-254.webp'),
+    attributes: {
+      风格特征: '清瘦修长 · 衣带飘举',
+      源头: '南朝士大夫审美，经洛阳凉州西传',
+      代表洞窟: '第257窟、第254窟、第249窟',
     },
   },
 ];
@@ -1489,5 +1758,67 @@ export const INITIAL_COMMENTS = [
     time: '两周前',
     text: '放大到石青的颗粒都能看见，比我当年在洞窟里打手电看的清楚多了。',
     muralId: 'mural-threehares',
+  },
+];
+
+/* =========================================================================
+   Videos
+   Educational videos from Bilibili (click-to-play embeds; verified live via
+   the Bilibili API at build time).
+   ========================================================================= */
+
+export interface VideoItem {
+  id: string;
+  bvid: string;
+  title: Record<string, string>;
+  duration: string;
+  up: string;
+  cover: string;
+}
+
+export const VIDEOS: VideoItem[] = [
+  {
+    id: 'v1',
+    bvid: 'BV1WfnL66E8w',
+    title: {
+      zh: '从张骞凿空到数字敦煌：10分钟看懂莫高窟与藏经洞的命运',
+      en: 'From Zhang Qian to Digital Dunhuang: Mogao and the Library Cave in 10 Minutes',
+    },
+    duration: '11分钟',
+    up: '武舅姥爷',
+    cover: 'https://i0.hdslb.com/bfs/archive/f14024b47a54330458fea0726f50c408967ff1f2.jpg',
+  },
+  {
+    id: 'v2',
+    bvid: 'BV1vgjyzGEqW',
+    title: {
+      zh: '观敦煌 · 见自在：一把钥匙通天下佛门',
+      en: 'Reading Dunhuang: One Key to All Buddhist Art',
+    },
+    duration: '22分钟',
+    up: '三希雪堂',
+    cover: 'https://i0.hdslb.com/bfs/archive/a040d6a44fa45071fcecda9b595a52257a51b1a4.jpg',
+  },
+  {
+    id: 'v3',
+    bvid: 'BV1HE421P7ur',
+    title: {
+      zh: '敦煌研究院 · 带你云游敦煌',
+      en: 'Dunhuang Academy: A Virtual Tour of Dunhuang',
+    },
+    duration: '186分钟',
+    up: '青鬓醉朝阳',
+    cover: 'https://i2.hdslb.com/bfs/archive/ce20c91a9de03c65b479545c17ad66b761d240cc.jpg',
+  },
+  {
+    id: 'v4',
+    bvid: 'BV1V14y117qy',
+    title: {
+      zh: '央视纪录片《敦煌》全10集',
+      en: 'CCTV Documentary: Dunhuang (All 10 Episodes)',
+    },
+    duration: '408分钟',
+    up: '壹贰叁Kiki',
+    cover: 'https://i2.hdslb.com/bfs/archive/8f0ba84b71792e346bcff76a906c9a9a0e524d9d.png',
   },
 ];

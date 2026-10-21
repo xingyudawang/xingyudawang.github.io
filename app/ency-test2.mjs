@@ -1,0 +1,38 @@
+﻿import { spawn } from "node:child_process";
+import fs from "node:fs";
+const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const profile = "D:\\wangzhan\\.chrome-eny2";
+fs.rmSync(profile, { recursive: true, force: true });
+const chrome = spawn(CHROME, ["--headless=new","--remote-debugging-port=9352",`--user-data-dir=${profile}`,"--no-first-run","--mute-audio","--window-size=420,900","about:blank"],{stdio:"ignore"});
+const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
+await sleep(2500);
+const list = await (await fetch("http://127.0.0.1:9352/json/list")).json();
+const page = list.find(t=>t.type==="page");
+const ws = new WebSocket(page.webSocketDebuggerUrl);
+await new Promise(r=>ws.addEventListener("open",r,{once:true}));
+let id=0; const pend=new Map();
+ws.addEventListener("message",e=>{const m=JSON.parse(e.data); if(m.id&&pend.has(m.id)){const p=pend.get(m.id);pend.delete(m.id);p(m.result);}});
+const send=(method,params={})=>new Promise(res=>{const i=++id;pend.set(i,res);ws.send(JSON.stringify({id:i,method,params}));});
+const evaluate=async(expression)=>{const r=await send("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true}); if(r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description ?? r.exceptionDetails.text); return r.result?.value;};
+await send("Runtime.enable"); await send("Page.enable");
+await send("Emulation.setDeviceMetricsOverride",{width:420,height:900,deviceScaleFactor:2,mobile:true});
+await send("Emulation.setTouchEmulationEnabled",{enabled:true,maxTouchPoints:5});
+await send("Page.navigate",{url:"http://127.0.0.1:4173/"});
+await sleep(2500);
+await send("Page.navigate",{url:"http://127.0.0.1:4173/#/encyclopedia"});
+await sleep(5000);
+await evaluate(`[...document.querySelectorAll('button')].find(b => (b.getAttribute('aria-label') || '') === '放大观察')?.click()`);
+await sleep(1200);
+const captionBefore = await evaluate(`[...document.querySelectorAll('p')].map(p=>p.textContent).find(t=>t.includes('真实壁画扫描')) ?? 'none'`);
+console.log('caption before:', captionBefore);
+const box = await evaluate(`(() => { const img = document.querySelector('.fixed.inset-0 img'); const r = img.getBoundingClientRect(); return { x: r.x + r.width/2, y: r.y + r.height/2 }; })()`);
+console.log('box:', JSON.stringify(box));
+for (let n = 0; n < 2; n++) {
+  await send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:box.x,y:box.y,id:1}]});
+  await send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+  await sleep(140);
+}
+await sleep(900);
+const captionAfter = await evaluate(`[...document.querySelectorAll('p')].map(p=>p.textContent).find(t=>t.includes('真实壁画扫描')) ?? 'none'`);
+console.log('caption after:', captionAfter);
+ws.close(); chrome.kill();
