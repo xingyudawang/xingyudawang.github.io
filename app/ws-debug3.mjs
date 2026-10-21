@@ -1,0 +1,46 @@
+﻿import { spawn } from "node:child_process";
+import fs from "node:fs";
+const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const profile = "D:\\wangzhan\\.chrome-wsf";
+fs.rmSync(profile, { recursive: true, force: true });
+const chrome = spawn(CHROME, ["--headless=new","--remote-debugging-port=9345",`--user-data-dir=${profile}`,"--no-first-run","--use-gl=angle","--use-angle=swiftshader","--enable-unsafe-swiftshader","--mute-audio","--window-size=420,900","about:blank"],{stdio:"ignore"});
+const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
+await sleep(2500);
+const list = await (await fetch("http://127.0.0.1:9345/json/list")).json();
+const page = list.find(t=>t.type==="page");
+const ws = new WebSocket(page.webSocketDebuggerUrl);
+await new Promise(r=>ws.addEventListener("open",r,{once:true}));
+let id=0; const pend=new Map();
+ws.addEventListener("message",e=>{const m=JSON.parse(e.data); if(m.id&&pend.has(m.id)){const p=pend.get(m.id);pend.delete(m.id);p(m.result);}});
+const send=(method,params={})=>new Promise(res=>{const i=++id;pend.set(i,res);ws.send(JSON.stringify({id:i,method,params}));});
+const evaluate=async(expression)=>{const r=await send("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true}); if(r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description ?? r.exceptionDetails.text); return r.result?.value;};
+const touch=async(evs)=>{for(const ev of evs) await send("Input.dispatchTouchEvent",ev);};
+await send("Page.enable"); await send("Runtime.enable");
+await send("Emulation.setDeviceMetricsOverride",{width:420,height:900,deviceScaleFactor:2,mobile:true});
+await send("Emulation.setTouchEmulationEnabled",{enabled:true,maxTouchPoints:5});
+await send("Page.navigate",{url:"http://127.0.0.1:4173/#/workshop"});
+await sleep(8000);
+const info = await evaluate(`(() => {
+  const c = [...document.querySelectorAll('canvas')].pop();
+  const box = c.parentElement;
+  const stage = box.parentElement.parentElement;
+  const r = c.getBoundingClientRect();
+  const sr = stage.getBoundingClientRect();
+  return { boxTransform: box.style.transform, canvasRect: {x:r.x,y:r.y,w:r.width,h:r.height}, stageRect: {x:sr.x,y:sr.y,w:sr.width,h:sr.height}, boxLayout: {w: box.offsetWidth, h: box.offsetHeight} };
+})()`);
+console.log(JSON.stringify(info, null, 1));
+const r = info.canvasRect;
+await touch([{type:"touchStart",touchPoints:[{x:r.x+r.w*0.4,y:r.y+r.h*0.4,id:1},{x:r.x+r.w*0.6,y:r.y+r.h*0.4,id:2}]}]);
+for(let i=1;i<=8;i++){ await touch([{type:"touchMove",touchPoints:[{x:r.x+r.w*(0.4-i*0.03),y:r.y+r.h*0.4,id:1},{x:r.x+r.w*(0.6+i*0.03),y:r.y+r.h*0.4,id:2}]}]); await sleep(20); }
+await touch([{type:"touchEnd",touchPoints:[]}]);
+await sleep(800);
+const info2 = await evaluate(`(() => {
+  const c = [...document.querySelectorAll('canvas')].pop();
+  const box = c.parentElement;
+  const stage = box.parentElement.parentElement;
+  const r = c.getBoundingClientRect();
+  const sr = stage.getBoundingClientRect();
+  return { boxTransform: box.style.transform, canvasRect: {x:r.x,y:r.y,w:r.width,h:r.height}, stageRect: {x:sr.x,y:sr.y,w:sr.width,h:sr.height}, boxLayout: {w: box.offsetWidth, h: box.offsetHeight} };
+})()`);
+console.log(JSON.stringify(info2, null, 1));
+ws.close(); chrome.kill();

@@ -1,7 +1,7 @@
 /* generated at build time */
-const VERSION = "v1792592489527";
+const VERSION = "v1792593448404";
 const CACHE = 'mogao-' + VERSION;
-const PRECACHE = ["/","/index.html","/media/thumb-mural-cave-320.webp","/assets/CavePanorama-y8uByDuq.js","/assets/DeepZoomGallery-0i27aXx3.js","/assets/DrawingStudio-D6_ewSf7.js","/assets/icons-ZnidQ9Cn.js","/assets/index-kNtmR3nn.js","/assets/index-NUKn2zNR.css","/assets/react-BUQJQBo4.js","/assets/rolldown-runtime-WkwZ5CU-.js","/assets/three-BjAaiPDQ.js"];
+const PRECACHE = ["/","/index.html","/media/thumb-mural-cave-320.webp","/assets/CavePanorama-9zdv4tv6.js","/assets/DeepZoomGallery-CPIpGec3.js","/assets/DrawingStudio-DpQTzC2N.js","/assets/icons-ZnidQ9Cn.js","/assets/index-BqaVw8ap.js","/assets/index-NUKn2zNR.css","/assets/react-BUQJQBo4.js","/assets/rolldown-runtime-WkwZ5CU-.js","/assets/three-BjAaiPDQ.js"];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -25,10 +25,16 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
+  // Always bypass the browser HTTP cache when the service worker fetches.
+  // GitHub Pages serves Cache-Control: max-age=600, which used to pin a
+  // stale index.html (and with it the whole old app) for up to 10 minutes
+  // after every deploy.
+  const network = (request) => fetch(request, { cache: 'no-store' });
+
   // hashed, immutable shell chunks: cache-first
   if (url.pathname.startsWith('/assets/')) {
     e.respondWith(
-      caches.match(req).then((hit) => hit || fetch(req).then((res) => {
+      caches.match(req).then((hit) => hit || network(req).then((res) => {
         if (res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
         return res;
       }))
@@ -41,7 +47,7 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(
       caches.open(CACHE).then(async (cache) => {
         const hit = await cache.match(req);
-        const fresh = fetch(req)
+        const fresh = network(req)
           .then((res) => {
             if (res.ok) cache.put(req, res.clone());
             return res;
@@ -53,10 +59,10 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // navigations: network-first with offline fallback to the cached shell
+  // navigations: strictly network-first with offline fallback to the shell
   if (req.mode === 'navigate') {
     e.respondWith(
-      fetch(req)
+      network(req)
         .then((res) => {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put('/index.html', copy));
