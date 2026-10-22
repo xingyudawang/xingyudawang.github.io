@@ -65,15 +65,19 @@
 
 ## 四、开源依赖
 
-| 依赖 | 许可 |
-| --- | --- |
-| React / React DOM | MIT |
-| three.js | MIT |
-| Vite | MIT |
-| Tailwind CSS | MIT |
-| perfect-freehand | MIT |
-| lucide-react | ISC |
-| canvas-confetti | ISC |
+| 依赖 | 许可 | 说明 |
+| --- | --- | --- |
+| React / React DOM | MIT | 运行时 |
+| three.js | MIT | 运行时 |
+| Vite | MIT | 构建工具（不随网页分发） |
+| Tailwind CSS | MIT | 构建工具（不随网页分发） |
+| perfect-freehand | MIT | 运行时 |
+| lucide-react | ISC | 运行时 |
+| canvas-confetti | ISC | 运行时 |
+| sharp | Apache-2.0 | 构建期离线图像处理（不随网页分发） |
+| TypeScript | Apache-2.0 | 构建工具（不随网页分发） |
+
+界面字体通过 Google Fonts 引入（Noto Serif SC / Ma Shan Zheng / Cinzel），均为 SIL Open Font License 1.1。
 
 ## 五、致谢
 
