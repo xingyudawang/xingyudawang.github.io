@@ -55,7 +55,12 @@
 - 界面文案、讲解词、百科条目、题库：本项目自行撰写。
 - 洞窟年代、壁面方位、图像内容等事实性信息，参考敦煌研究院「数字敦煌」各窟说明页的公开描述（仅作事实核对，正文为自行撰写）。
 
-## 三、字体
+## 三、讲解音频
+
+- `media/tts/*.mp3`：导览讲解音频，由本项目自行撰写的讲稿经 **Microsoft Edge 浏览器的朗读语音合成**（`zh-CN-XiaoxiaoNeural` 神经语音）在开发阶段离线合成后随站点分发，播放不依赖任何外部服务，不含第三方版权音频素材。
+- 浏览器缺少对应音频时，自动回退到浏览器内置的 **Web Speech API** 朗读同一份讲稿文本。
+
+## 四、字体
 
 通过 Google Fonts 引入，遵循各自的授权：
 
@@ -63,7 +68,7 @@
 - [Ma Shan Zheng](https://fonts.google.com/specimen/Ma+Shan+Zheng) — SIL Open Font License 1.1
 - [Cinzel](https://fonts.google.com/specimen/Cinzel) — SIL Open Font License 1.1
 
-## 四、开源依赖
+## 五、开源依赖
 
 | 依赖 | 许可 | 说明 |
 | --- | --- | --- |
@@ -79,7 +84,7 @@
 
 界面字体通过 Google Fonts 引入（Noto Serif SC / Ma Shan Zheng / Cinzel），均为 SIL Open Font License 1.1。
 
-## 五、致谢
+## 六、致谢
 
 感谢敦煌研究院与「数字敦煌」项目长期以来的数字化工作——没有这些公开的高精度扫描，
 这个项目不可能呈现出哪怕是原作的一小部分质感。

@@ -13,6 +13,8 @@
  * render the live transcript.
  */
 
+import { VOICE_TRACKS, type VoiceCue } from './ttsAudio';
+
 export type NarrationState = {
   status: 'idle' | 'speaking' | 'paused' | 'unsupported' | 'blocked';
   /** id of whatever requested the narration (hotspot / mural / cave) */
@@ -242,16 +244,53 @@ class NarrationManager {
   /**
    * Start narrating `text`. Safe to call from a tap handler (required by iOS).
    * Calling again with a different sourceId replaces the current narration.
+   *
+   * When a pre-rendered track exists for this source (see ttsAudio.ts) it is
+   * played instead of the browser's speech synthesiser — the same voice on
+   * every device, and the sentence cues keep the transcript in sync.
    */
   speak(sourceId: string, title: string, text: string, lang: 'zh' | 'en' | 'ja' | 'fr' = 'zh') {
-    if (!this.supported) {
-      this.emit({ status: 'unsupported', sourceId, title, lang: LANG_MAP[lang], chunks: chunkText(text) });
-      return;
-    }
-
     this.stopInternal();
 
     const chunks = chunkText(text);
+    const track = lang === 'zh' ? VOICE_TRACKS[sourceId]?.zh : undefined;
+
+    if (track && chunks.length) {
+      this.lang = LANG_MAP[lang] ?? 'zh-CN';
+      this.queue = chunks;
+      this.cursor = 0;
+      this.cancelled = false;
+      this.audioCues = track.cues && track.cues.length ? track.cues : null;
+      this.emit({
+        status: 'speaking',
+        sourceId,
+        title,
+        lang: this.lang,
+        chunks: this.audioCues ? this.audioCues.map((c) => c.text) : chunks,
+        chunkIndex: 0,
+        spokenChars: 0,
+        totalChars: text.length,
+      });
+      this.playAudio(track.audio, sourceId, title, text, lang);
+      return;
+    }
+
+    this.speakSpeech(sourceId, title, text, lang, chunks);
+  }
+
+  /** Browser speech-synthesis path (fallback when no rendered audio exists). */
+  private speakSpeech(
+    sourceId: string,
+    title: string,
+    text: string,
+    lang: 'zh' | 'en' | 'ja' | 'fr',
+    chunks: string[] = chunkText(text)
+  ) {
+    if (!this.supported) {
+      this.emit({ status: 'unsupported', sourceId, title, lang: LANG_MAP[lang], chunks });
+      return;
+    }
+
     this.lang = LANG_MAP[lang] ?? 'zh-CN';
     this.queue = chunks;
     this.cursor = 0;
@@ -277,6 +316,98 @@ class NarrationManager {
       /* noop */
     }
     this.speakCurrentChunk();
+  }
+
+  /**
+   * Play a pre-rendered track, driving the live transcript from its sentence
+   * cues. Falls back to speech synthesis if the file fails to load/play.
+   */
+  private playAudio(
+    url: string,
+    sourceId: string,
+    title: string,
+    text: string,
+    lang: 'zh' | 'en' | 'ja' | 'fr'
+  ) {
+    const el = new Audio(url);
+    el.preload = 'auto';
+    const cues = this.audioCues;
+    const totalChars = text.length;
+    let duration = 0;
+    this.audio = el;
+
+    const sync = () => {
+      if (this.audio !== el || this.cancelled || !duration) return;
+      const frac = Math.min(1, el.currentTime / duration);
+      const spokenChars = Math.min(totalChars, Math.round(frac * totalChars));
+      let idx = 0;
+      if (cues && cues.length) {
+        let lo = 0;
+        let hi = cues.length - 1;
+        while (lo <= hi) {
+          const mid = (lo + hi) >> 1;
+          if (cues[mid].start <= el.currentTime) {
+            idx = mid;
+            lo = mid + 1;
+          } else {
+            hi = mid - 1;
+          }
+        }
+      } else if (this.queue.length) {
+        idx = Math.min(this.queue.length - 1, Math.floor(frac * this.queue.length));
+      }
+      this.emit({ status: 'speaking', chunkIndex: idx, spokenChars });
+    };
+
+    const bailToSpeech = () => {
+      if (this.audio !== el) return;
+      this.audio = null;
+      if (this.cancelled) return;
+      this.speakSpeech(sourceId, title, text, lang);
+    };
+
+    el.addEventListener('loadedmetadata', () => {
+      duration = el.duration || 0;
+    });
+    el.addEventListener('timeupdate', sync);
+    el.addEventListener('ended', () => {
+      if (this.audio !== el) return;
+      this.audio = null;
+      this.emit({
+        status: 'idle',
+        chunkIndex: cues && cues.length ? cues.length - 1 : 0,
+        spokenChars: totalChars,
+      });
+    });
+    el.addEventListener('error', bailToSpeech);
+    el.play().catch(bailToSpeech);
+  }
+
+  private chain: SpeechSynthesisUtterance | null = null;
+  private pauseTimer = 0;
+  private audio: HTMLAudioElement | null = null;
+  private audioCues: VoiceCue[] | null = null;
+
+  pause() {
+    if (this.audio) {
+      this.audio.pause();
+      this.emit({ status: 'paused' });
+      return;
+    }
+    if (!this.supported) return;
+    window.speechSynthesis.pause();
+    this.emit({ status: 'paused' });
+  }
+
+  resume() {
+    if (this.audio) {
+      this.audio.play().catch(() => undefined);
+      this.emit({ status: 'speaking' });
+      return;
+    }
+    if (!this.supported) return;
+    window.speechSynthesis.resume();
+    this.emit({ status: 'speaking' });
   }
 
   private speakCurrentChunk() {
@@ -345,21 +476,6 @@ class NarrationManager {
     }
   }
 
-  private chain: SpeechSynthesisUtterance | null = null;
-  private pauseTimer = 0;
-
-  pause() {
-    if (!this.supported) return;
-    window.speechSynthesis.pause();
-    this.emit({ status: 'paused' });
-  }
-
-  resume() {
-    if (!this.supported) return;
-    window.speechSynthesis.resume();
-    this.emit({ status: 'speaking' });
-  }
-
   get isPaused() {
     return this.state.status === 'paused';
   }
@@ -369,6 +485,18 @@ class NarrationManager {
     this.queue = [];
     this.cursor = 0;
     this.chain = null;
+    this.audioCues = null;
+    const el = this.audio;
+    this.audio = null;
+    if (el) {
+      try {
+        el.pause();
+        el.removeAttribute('src');
+        el.load();
+      } catch {
+        /* noop */
+      }
+    }
     if (this.pauseTimer) {
       clearTimeout(this.pauseTimer);
       this.pauseTimer = 0;
